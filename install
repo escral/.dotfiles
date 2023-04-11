@@ -1,11 +1,20 @@
-#!/usr/bin/env zsh
-# I am using zsh instead of bash.  I was having some troubles using bash with
-# arrays.  Didn't want to investigate, so I just did zsh
-pushd $DOTFILES
-for folder in $(echo $STOW_FOLDERS | sed "s/,/ /g")
+#!/usr/bin/env bash
+
+# change directory to $DOTFILES
+pushd "$DOTFILES"
+
+# loop through the list of folders
+for folder in $(echo "$STOW_FOLDERS" | sed "s/,/ /g")
 do
+    # print the folder name
     echo "stow $folder"
-    stow -D $folder
-    stow $folder
+
+    # unstow the folder
+    stow -D "$folder"
+
+    # restow the folder
+    stow "$folder"
 done
+
+# change back to the previous directory
 popd
