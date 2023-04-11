@@ -4,6 +4,7 @@
 alias cda="composer dump-autoload"
 alias pa="php artisan"
 alias www="cd $WWW"
+alias src="source ~/.bashrc"
 
 # Other
 alias xsc="xclip -selection clipboard"
