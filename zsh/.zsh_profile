@@ -1,0 +1,23 @@
+export XDG_CONFIG_HOME=$HOME/.config
+
+PERSONAL=$XDG_CONFIG_HOME/personal
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+source $PERSONAL/env
+for i in `find -L $PERSONAL`; do
+    source $i
+done
+
+export DOTFILES=$HOME/.dotfiles
+
+addToPathFront $HOME/.local/.npm-global/bin
+addToPathFront $HOME/.local/scripts
+addToPathFront $HOME/.local/bin
+
+# Where should I put you?
+#bindkey -s ^f "tmux-sessionizer\n"
+
+bindkey '^M' autosuggest-execute
+bindkey '^@' autosuggest-accept
+# bindkey "^P" self-insert

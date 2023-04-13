@@ -7,13 +7,10 @@ alias www="cd $WWW"
 alias src="source ~/.bashrc"
 
 # Other
-alias xsc="xclip -selection clipboard"
+alias copy="kitty +kitten clipboard"
 alias my_ip="ip address | grep -o \"inet 192.*/\" | awk '{ print \$2 }' | tr / ' ' | xargs"
 
 #!/usr/bin/env bash
 alias dotFileInstall="$DOTFILES/install"
-
-alias cclip="xclip -selection clipboard"
-alias pclip="xclip -selection clipboard"
 
 alias mynpm='rm ~/.npmrc'
