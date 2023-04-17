@@ -14,15 +14,22 @@ set $mod Mod4
 
 
 # ====================================================================================================
-# ====================================================================================================
+# ========== Custom Keys =============================================================================
 # ====================================================================================================
 
 # Setup monitor
-exec --no-startup-id xrand --output DVI-I-1 --auto --right-of HDMI-0
+exec --no-startup-id xrandr --output DVI-I-1 --auto --right-of HDMI-0
 # Map Caps Lock key to Escape
 exec --no-startup-id setxkbmap -option caps:escape
 
 focus_follows_mouse no
+
+# Alt+Tab - Open Rofi (fzf go to window)
+bindsym Mod1+Tab exec rofi -show window -show-icons
+
+# Tab window navigation
+bindsym $mod+Tab workspace next
+bindsym $mod+Shift+Tab workspace prev
 
 # ====================================================================================================
 # ====================================================================================================
@@ -37,7 +44,7 @@ font pango:monospace 8
 # GET DEM BORDERS OUT OF HEREc:w
 #
 # Thanks Childz
-for_window [class="^.*"] border pixel 2
+for_window [class="^.*"] border pixel 0
                           # class                 border  backgr. text    indicator child_border
 for_window [class="^.*"] client.focused          #77dd77 #285577 #ffffff #2e9ef4   #285577
 
@@ -226,30 +233,5 @@ bar {
         tray_output primary
 }
 
-# ------------------------------------------
-# CUSTOM KEYS START
-# ------------------------------------------
-exec --no-startup-id nm-applet
-
-bindsym $mod+Shift+s exec --no-startup-id ~/dotfiles/bin/monitor
-bindsym $mod+Shift+n exec --no-startup-id ~/dotfiles/bin/resolution
-
-# FKeys
-# Pulse Audio controls
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
-#
-# # Sreen brightness controls
-bindsym XF86MonBrightnessUp exec xbacklight -inc 20 # increase screen brightness
-bindsym XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen brightness
-
-# Alsa audio controls.
-bindsym $mod+Shift+comma exec ~/.config/i3/scripts/alsa restore
-bindsym $mod+semicolon exec ~/.config/i3/scripts/alsa down Headphone
-bindsym $mod+comma exec ~/.config/i3/scripts/alsa up Headphone
-bindsym $mod+m move workspace to output left
-
-# Suspend
-bindsym $mod+Shift+period exec systemctl suspend
-
+# Use pactl to adjust volume in PulseAudio.
+exec --no-startup-id volumeicon

@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-export STOW_FOLDERS="bin,nvim,tmux,uwuntu,netflix,personal,i3,zsh,xkb"
+export STOW_FOLDERS="bin,kitty,uwuntu,i3,zsh,polybar"
 
 increaseWatchers() {
     sudo sysctl fs.inotify.max_user_watches=65536
