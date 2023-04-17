@@ -18,6 +18,6 @@ addToPathFront $HOME/.local/bin
 # Where should I put you?
 #bindkey -s ^f "tmux-sessionizer\n"
 
-bindkey '^M' autosuggest-execute
+#bindkey '^M' autosuggest-execute
 bindkey '^@' autosuggest-accept
 # bindkey "^P" self-insert
