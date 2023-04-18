@@ -15,3 +15,5 @@ alias my_ip="ip address | grep -o \"inet 192.*/\" | awk '{ print \$2 }' | tr / '
 alias dotFileInstall="$DOTFILES/install"
 
 alias mynpm='rm ~/.npmrc'
+
+alias ff='fzm'

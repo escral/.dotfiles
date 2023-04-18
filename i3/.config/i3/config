@@ -37,12 +37,12 @@ exec --no-startup-id setxkbmap -option caps:escape
 
 # Rofi
 # Alt+Tab - Open Rofi (fzf go to window)
-bindsym Mod1+Tab exec --no-startup-id rofi -show window 
+bindsym $mod+Tab exec --no-startup-id rofi -show window 
 bindsym $mod+d exec --no-startup-id rofi -show drun -run-shell-command '{terminal} -e zsh -ic "{cmd} && read"'
 
 # Tab window navigation
-bindsym $mod+Tab workspace next
-bindsym $mod+Shift+Tab workspace prev
+bindsym Mod1+Tab workspace next
+bindsym Mod1+Shift+Tab workspace prev
 
 # Other
 focus_follows_mouse no
