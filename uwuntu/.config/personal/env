@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-export STOW_FOLDERS="bin,kitty,uwuntu,i3,zsh,fonts,rofi"
+export STOW_FOLDERS="bin,kitty,uwuntu,i3,zsh,fonts,rofi,fonts"
 
 increaseWatchers() {
     sudo sysctl fs.inotify.max_user_watches=65536

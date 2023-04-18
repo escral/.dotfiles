@@ -11,49 +11,51 @@
 general {
     colors = true
     interval = 5
-    color_good = "#2AA198"
-    color_bad = "#586E75"
-    color_degraded = "#DC322F"
+    color_good = "#a6d189"
+    color_bad = "#e78284"
+    color_degraded = "#ef9f76"
     output_format = i3bar
+    markup = "pango"
 }
 
 order += "disk /"
 order += "cpu_usage"
 order += "memory"
-# order += "battery all"
+order += "wireless _first_"
 order += "volume master"
 order += "tztime local"
 order += "time"
 
 # This is just for display the String "AimerNeige" you can delete it or change it to your own name
 disk "/" {
-    format = " %avail"
+    format = "<span font_family='Font Awesome 6 Pro' foreground='#a6d189'></span> %avail"
 }
 
 cpu_usage {
-    format = " %usage"
+    max_threshold = 75
+    degraded_threshold = 90
+
+    format = "<span font_family='Font Awesome 6 Pro' font_weight='400' foreground='#a6d189'></span> %usage"
+    format_above_threshold = "<span font_family='Font Awesome 6 Pro'></span> %usage"
+    format_above_degraded_threshold = "<span font_family='Font Awesome 6 Pro'></span> %usage"
 }
 
 memory {
-    format = " %used"
+    threshold_degraded = 15%
+    threshold_critical = 5%
+
+    format = "<span font_family='Font Awesome 6 Pro' foreground='#a6d189'></span> %used"
+    format_degraded = "<span font_family='Font Awesome 6 Pro'></span> %used"
 }
 
-battery all {
-    format = " %status %percentage "
-        format_down = "No battery"
-        last_full_capacity = true
-        integer_battery_capacity = true
-        status_chr = ""
-        status_bat = ""
-        status_unk = ""
-        status_full = ""
-        low_threshold = 20
-        threshold_type = time
+wireless _first_ {
+        format_up = "<span font_family='Font Awesome 6 Pro' foreground='#a6d189'></span> <span foreground='#c6d0f5'>%quality</span>"
+        format_down = "<span font_family='Font Awesome 6 Pro'></span>"
 }
 
 volume master {
-    format = " %volume"
-    format_muted = " ﱝ "
+    format = "<span font_family='Font Awesome 6 Pro' foreground='#a6d189'></span> %volume"
+    format_muted = "<span font_family='Font Awesome 6 Pro' foreground='#e78284'></span>"
     device = "default"
     mixer = "Master"
     mixer_idx = 0
@@ -61,6 +63,7 @@ volume master {
 
 tztime local {
     format = "%A %d.%m.%Y"
+    # locale = ru_RU.UTF-8
 }
 
 time {
