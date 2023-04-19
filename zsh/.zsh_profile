@@ -22,3 +22,35 @@ bindkey '\e' autosuggest-clear
 bindkey '^ ' autosuggest-fetch
 bindkey '^[[Z' complete-word
 # bindkey "^P" self-insert
+
+wallpaper () {
+    wallpapers=$(fd --type file --base-directory ~/personal/wallpapers)
+    wallpaper_name=$(echo "-- Random\n$wallpapers" | fzf --preview="kitty +kitten icat --transfer-mode stream --place 100x100@0x0 -z -1 ~/personal/wallpapers/{}")
+
+    if [[ "$wallpaper_name" == "-- Random" ]]; then
+        echo "Random wallpaper selected"
+        wallpaper_name="$(echo "$wallpapers" | shuf -n 1)"
+    fi
+
+    if [[ -z "$wallpaper_name" ]]; then
+        echo "Aborting"
+        return 1
+    fi
+
+    echo "Setting wallpaper $wallpaper_name $1"
+
+    wallpaper_name="/home/alexander/personal/wallpapers/$wallpaper_name"
+
+    # If monitor number is provided, set wallpaper for that monitor only
+    if [[ $1 =~ ^[0-9]+$ ]]; then   
+        nitrogen --set-zoom-fill --save --head="$1" $wallpaper_name
+    else
+        # Get list of available monitors
+        available_monitors=$(xrandr | grep " connected" | cut -d" " -f1)
+
+        # Loop through available monitors and set wallpaper
+        for monitor in "${available_monitors[@]}"; do
+            nitrogen --set-zoom-fill --save --head="$monitor" $wallpaper_name
+        done
+    fi
+}
