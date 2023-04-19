@@ -37,7 +37,7 @@ wallpaper () {
         return 1
     fi
 
-    echo "Setting wallpaper $wallpaper_name $1"
+    echo "Setting wallpaper $wallpaper_name"
 
     wallpaper_name="/home/alexander/personal/wallpapers/$wallpaper_name"
 
