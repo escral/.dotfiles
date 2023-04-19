@@ -43,14 +43,14 @@ wallpaper () {
 
     # If monitor number is provided, set wallpaper for that monitor only
     if [[ $1 =~ ^[0-9]+$ ]]; then   
-        nitrogen --set-zoom-fill --save --head="$1" $wallpaper_name
+        nitrogen --set-zoom-fill --save --head="$1" "$wallpaper_name" 
     else
         # Get list of available monitors
         available_monitors=$(xrandr | grep " connected" | cut -d" " -f1)
 
         # Loop through available monitors and set wallpaper
         for monitor in "${available_monitors[@]}"; do
-            nitrogen --set-zoom-fill --save --head="$monitor" $wallpaper_name
+            nitrogen --set-zoom-fill --save --head="$monitor" "$wallpaper_name"
         done
     fi
 }
