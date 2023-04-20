@@ -13,7 +13,33 @@ set $mod Mod4
 
 
 # Theme
-include theme
+# Catppuccin/frappe
+
+set $rosewater #f2d5cf
+set $flamingo  #eebebe
+set $pink      #f4b8e4
+set $mauve     #ca9ee6
+set $red       #e78284
+set $maroon    #ea999c
+set $peach     #ef9f76
+set $green     #a6d189
+set $teal      #81c8be
+set $sky       #99d1db
+set $sapphire  #85c1dc
+set $blue      #8caaee
+set $lavender  #babbf1
+set $text      #c6d0f5
+set $subtext1  #b5bfe2
+set $subtext0  #a5adce
+set $overlay2  #949cbb
+set $overlay1  #838ba7
+set $overlay0  #737994
+set $surface2  #626880
+set $surface1  #51576d
+set $surface0  #414559
+set $base      #303446
+set $mantle    #292c3c
+set $crust     #232634
 
 # ====================================================================================================
 # ========== Custom ==================================================================================
@@ -26,8 +52,8 @@ exec --no-startup-id "setxkbmap -layout us,ru"
 exec --no-startup-id "setxkbmap -option 'grp:alt_shift_toggle'"
 
 # Setup monitor
+exec --no-startup-id xrandr --output HDMI-0 --auto --primary
 exec --no-startup-id xrandr --output DVI-I-1 --auto --right-of HDMI-0
-exec --no-startup-id xrandr --output HDMI-0 --primary
 
 # Setup input
 exec --no-startup-id xset r rate 400
@@ -44,11 +70,45 @@ bindsym $mod+Tab exec --no-startup-id rofi -show window
 bindsym $mod+d exec --no-startup-id rofi -show drun -run-shell-command '{terminal} -e zsh -ic "{cmd} && read"'
 
 # Tab window navigation
-bindsym Mod1+Tab workspace next
-bindsym Mod1+Shift+Tab workspace prev
+bindsym Mod1+Tab workspace back_and_forth
+# bindsym Mod1+Shift+Tab workspace prev
+
+#
+bindsym $mod+c exec --no-startup-id google-chrome
+
+#Skratchpag
+# Make the currently focused window a scratchpad
+bindsym $mod+Shift+minus move scratchpad
+
+# Show the first scratchpad window
+bindsym $mod+minus scratchpad show
+
+# Toggle floating/tiling
+bindsym $mod+plus floating toggle
 
 # Other
 focus_follows_mouse no
+
+# Workspaces
+# =============================================
+set $wsCode "Code"
+set $wsBrowser "Browser"
+set $wsTerminals "Terminals"
+
+workspace $wsCode output primary
+workspace $wsBrowser output nonprimary
+workspace $wsTerminals output nonprimary
+
+assign [class="^Google*"] → $wsBrowser
+assign [class="^Code"] → $wsCode
+assign [class="^Webstorm*"] → $wsCode
+assign [class="^kitty"] → $wsTerminals
+
+workspace_auto_back_and_forth yes
+popup_during_fullscreen smart
+focus_on_window_activation focus
+# mouse_warping none
+# for_window [all] focus
 
 # ====================================================================================================
 # ====================================================================================================
@@ -58,14 +118,20 @@ focus_follows_mouse no
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:FiraCode Nerd Font 11   
+font pango:FiraCode Nerd Font 10 
 
-# GET DEM BORDERS OUT OF HEREc:w
-#
-# Thanks Childz
-for_window [class="^.*"] border pixel 0
-                          # class                 border  backgr. text    indicator child_border
-for_window [class="^.*"] client.focused          #77dd77 #285577 #ffffff #2e9ef4   #285577
+for_window [class="^.*"] title_window_icon no
+for_window [class="^.*"] title_format " <span>%title</span>"
+
+default_border none
+default_floating_border none
+
+# class                    border    backgr.   text      indicator  child_border
+client.focused             #589cf5   #589cf5   #ffffff   #2e9ef4    #589cf5
+client.focused_inactive    #303446   #303446   $text     #2e9ef4    #303446
+client.unfocused           $crust    $crust    $overlay3 #2e9ef4    $crust
+client.urgent              #e78284   #e78284   #ffffff   #2e9ef4    #e78284
+client.background $base
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -83,7 +149,7 @@ floating_modifier $mod
 
 # start a terminal
 # bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec --no-startup-id i3-sensible-terminal
 
 # kill focused window
 # bindsym $mod+space exec "/home/theprimeagen/dotfiles/awesome-streamerrc/ThePrimeagen/tmux2"
@@ -146,9 +212,9 @@ bindsym $mod+a focus parent
 #bindsym $mod+d focus child
 
 # # switch to workspace
-bindsym $mod+1 workspace 1
-bindsym $mod+2 workspace 2
-bindsym $mod+3 workspace 3
+bindsym $mod+1 workspace $wsCode
+bindsym $mod+2 workspace $wsBrowser
+bindsym $mod+3 workspace $wsTerminals
 bindsym $mod+4 workspace 4
 bindsym $mod+5 workspace 5
 bindsym $mod+6 workspace 6
@@ -158,9 +224,9 @@ bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1
-bindsym $mod+Shift+2 move container to workspace 2
-bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+1 move container to workspace $wsCode
+bindsym $mod+Shift+2 move container to workspace $wsBrowser
+bindsym $mod+Shift+3 move container to workspace $wsTerminals
 bindsym $mod+Shift+4 move container to workspace 4
 bindsym $mod+Shift+5 move container to workspace 5
 bindsym $mod+Shift+6 move container to workspace 6
@@ -168,49 +234,6 @@ bindsym $mod+Shift+7 move container to workspace 7
 bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
-
-# NOTE: This is some real tom fooliery with my keyboard layout
-#  ZMK will send a shift mod with the items that require a shift key on a
-#  regular keyboard.  so though it defines a keycode as "LEFT_BRACE" it really
-#  is shift_L + LEFT_BRACE.  So you will notice the odd peppering of shifts and
-#  non shifts
-# switch to workspace
-# bindsym $mod+Shift+plus workspace 1
-# bindsym $mod+bracketleft workspace 2
-# bindsym $mod+Shift+braceleft workspace 3
-# bindsym $mod+Shift+parenleft workspace 4
-# bindsym $mod+Shift+ampersand workspace 5
-# bindsym $mod+equal workspace 6
-# bindsym $mod+Shift+parenright workspace 7
-# bindsym $mod+Shift+braceright workspace 8
-# bindsym $mod+bracketright workspace 9
-# bindsym $mod+Shift+asterisk workspace 10
-#
-# # NOTE: since i have to press shift to get these symbols
-# # move focused container to workspace.
-# #  I wanted to use this as my method of moving spaces around, but it doesn't
-# #  seem to work, but when i provide the keycode + shift it seems to work well.
-# # bindsym $mod+Shift+kp_1 move container to workspace 1
-# # bindsym $mod+Shift+kp_2 move container to workspace 2
-# # bindsym $mod+Shift+kp_3 move container to workspace 3
-# # bindsym $mod+Shift+kp_4 move container to workspace 4
-# # bindsym $mod+Shift+kp_5 move container to workspace 5
-# # bindsym $mod+Shift+kp_6 move container to workspace 6
-# # bindsym $mod+Shift+kp_7 move container to workspace 7
-# # bindsym $mod+Shift+kp_8 move container to workspace 8
-# # bindsym $mod+Shift+kp_9 move container to workspace 9
-# # bindsym $mod+Shift+kp_0 move container to workspace 10
-#
-# bindcode $mod+Shift+87 move container to workspace 1
-# bindcode $mod+Shift+88 move container to workspace 2
-# bindcode $mod+Shift+89 move container to workspace 3
-# bindcode $mod+Shift+83 move container to workspace 4
-# bindcode $mod+Shift+84 move container to workspace 5
-# bindcode $mod+Shift+85 move container to workspace 6
-# bindcode $mod+Shift+79 move container to workspace 7
-# bindcode $mod+Shift+80 move container to workspace 8
-# bindcode $mod+Shift+81 move container to workspace 9
-# bindcode $mod+Shift+90 move container to workspace 10
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
