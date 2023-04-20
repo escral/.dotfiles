@@ -52,11 +52,12 @@ exec --no-startup-id "setxkbmap -layout us,ru"
 exec --no-startup-id "setxkbmap -option 'grp:alt_shift_toggle'"
 
 # Setup monitor
-exec --no-startup-id xrandr --output HDMI-0 --auto --primary
-exec --no-startup-id xrandr --output DVI-I-1 --auto --right-of HDMI-0
+exec_always --no-startup-id xrandr --output HDMI-0 --auto --primary
+exec_always --no-startup-id xrandr --output DVI-I-1 --auto --right-of HDMI-0
 
 # Setup input
 exec --no-startup-id xset r rate 400
+exec_always --no-startup-id numlockx on
 
 # Map Caps Lock key to Escape
 exec --no-startup-id setxkbmap -option caps:escape
@@ -95,14 +96,14 @@ set $wsCode "Code"
 set $wsBrowser "Browser"
 set $wsTerminals "Terminals"
 
-workspace $wsCode output primary
-workspace $wsBrowser output nonprimary
-workspace $wsTerminals output nonprimary
+workspace $wsCode output right
+workspace $wsBrowser output left
+workspace $wsTerminals output left
 
-assign [class="^Google*"] → $wsBrowser
-assign [class="^Code"] → $wsCode
-assign [class="^Webstorm*"] → $wsCode
-assign [class="^kitty"] → $wsTerminals
+assign [class="^Google-chrome$"] → $wsBrowser
+assign [class="^Code$"] → $wsCode
+assign [class="^Webstorm$"] → $wsCode
+assign [class="^kitty$"] → $wsTerminals
 
 workspace_auto_back_and_forth yes
 popup_during_fullscreen smart
@@ -128,8 +129,8 @@ default_floating_border none
 
 # class                    border    backgr.   text      indicator  child_border
 client.focused             #589cf5   #589cf5   #ffffff   #2e9ef4    #589cf5
-client.focused_inactive    #303446   #303446   $text     #2e9ef4    #303446
-client.unfocused           $crust    $crust    $overlay3 #2e9ef4    $crust
+client.focused_inactive    $base   $base   $text     #2e9ef4    $base
+client.unfocused           #1c2836    #1c2836    $surface1 #2e9ef4    #1c2836
 client.urgent              #e78284   #e78284   #ffffff   #2e9ef4    #e78284
 client.background $base
 
