@@ -1,4 +1,4 @@
 bin/.local/bin
 !bin/.local/bin/twitch-chat
-
+.idea
 nvim/.config/nvim/plugin/packer_compiled.lua

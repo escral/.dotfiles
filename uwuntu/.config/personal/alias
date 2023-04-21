@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 
 # General 
+alias ff='fzm'
+alias www="cd ~/www"
+
+# PHP
 alias cda="composer dump-autoload"
 alias pa="php artisan"
-alias www="cd ~/www"
-alias src="source ~/.bashrc"
 
-# Other
+# Utils
 alias img="kitty +kitten icat"
 alias copy="kitty +kitten clipboard"
+
+# Other
 alias my_ip="ip address | grep -o \"inet 192.*/\" | awk '{ print \$2 }' | tr / ' ' | xargs"
 
 #!/usr/bin/env bash
 alias dotFileInstall="$DOTFILES/install"
-
-alias mynpm='rm ~/.npmrc'
-
-alias ff='fzm'
