@@ -1,15 +1,20 @@
+#!/usr/bin/env zsh
+
 export XDG_CONFIG_HOME=$HOME/.config
 
 PERSONAL=$XDG_CONFIG_HOME/personal
 
-ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-source $PERSONAL/env
-for i in `find -L $PERSONAL`; do
-    source $i
-done
+source "$PERSONAL"/env
+
+#for i in $(find -L "$PERSONAL"); do
+#    source $i
+#done
+
+find -L "$PERSONAL" -type f -name "*.zsh" -exec source {} \;
 
 export DOTFILES=$HOME/.dotfiles
 

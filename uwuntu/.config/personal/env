@@ -7,11 +7,6 @@ increaseWatchers() {
     sudo sysctl -p
 }
 
-change_background() {
-    echo "Not integrated"
-#    dconf write /org/mate/desktop/background/picture-filename "'$HOME/personal/wallpapers/$(ls ~/personal/wallpapers | fzf)'"
-}
-
 die() {
     echo >&2 "$@"
     exit 1

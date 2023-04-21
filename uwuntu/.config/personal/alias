@@ -13,6 +13,7 @@ alias img="kitty +kitten icat"
 alias copy="kitty +kitten clipboard"
 
 # Other
+# shellcheck disable=SC2142
 alias my_ip="ip address | grep -o \"inet 192.*/\" | awk '{ print \$2 }' | tr / ' ' | xargs"
 
 #!/usr/bin/env bash
