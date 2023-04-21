@@ -48,12 +48,14 @@ set $crust     #232634
 exec --no-startup-id nitrogen --restore
 
 # Setup input switcher
-exec --no-startup-id "setxkbmap -layout us,ru"
-exec --no-startup-id "setxkbmap -option 'grp:alt_shift_toggle'"
+exec_always --no-startup-id setxkbmap -layout us -option grp:alt_shift_toggle
 
-# Setup monitor
-exec_always --no-startup-id xrandr --output HDMI-0 --auto --primary
-exec_always --no-startup-id xrandr --output DVI-I-1 --auto --right-of HDMI-0
+# Setup monitorsdfdsfsdf
+set $codeMonitor HDMI-0
+set $otherMonitor DVI-I-1
+
+exec_always --no-startup-id xrandr --output $codeMonitor --auto --primary
+exec_always --no-startup-id xrandr --output $otherMonitor --auto --right-of $codeMonitor
 
 # Setup input
 exec --no-startup-id xset r rate 400
@@ -92,13 +94,13 @@ focus_follows_mouse no
 
 # Workspaces
 # =============================================
-set $wsCode "Code"
-set $wsBrowser "Browser"
-set $wsTerminals "Terminals"
+set $wsCode "1: Code"
+set $wsBrowser "2: Browser"
+set $wsTerminals "3: Terminals"
 
-workspace $wsCode output right
-workspace $wsBrowser output left
-workspace $wsTerminals output left
+workspace $wsCode output $codeMonitor
+workspace $wsBrowser output $otherMonitor
+workspace $wsTerminals output $otherMonitor
 
 assign [class="^Google-chrome$"] → $wsBrowser
 assign [class="^Code$"] → $wsCode
