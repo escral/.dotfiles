@@ -112,7 +112,6 @@ popup_during_fullscreen smart
 focus_on_window_activation focus
 # mouse_warping none
 # for_window [all] focus
-
 # ====================================================================================================
 # ====================================================================================================
 # ====================================================================================================
@@ -126,8 +125,11 @@ font pango:FiraCode Nerd Font 10
 for_window [class="^.*"] title_window_icon no
 for_window [class="^.*"] title_format " <span>%title</span>"
 
+for_window [floating] border pixel 2
+for_window [class="^jetbrains-webstorm$"] floating enable
+
 default_border none
-default_floating_border none
+default_floating_border normal
 
 # class                    border    backgr.   text      indicator  child_border
 client.focused             #589cf5   #589cf5   #ffffff   #2e9ef4    #589cf5
