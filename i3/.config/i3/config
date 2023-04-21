@@ -281,7 +281,7 @@ bar {
         font pango:FiraCode Nerd Font 11
         separator_symbol " | "    
         workspace_min_width 40
-        strip_workspace_numbers yes
+        strip_workspace_numbers no
 
         colors {
                 background #232634
