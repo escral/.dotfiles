@@ -48,8 +48,7 @@ set $crust     #232634
 exec --no-startup-id nitrogen --restore
 
 # Setup input switcher
-exec_always --no-startup-id setxkbmap -layout us 
-# It breaks Win key when switching to russian // -option grp:alt_shift_toggle
+exec --no-startup-idc init-locale
 
 # Setup monitorsdfdsfsdf
 set $codeMonitor HDMI-0
