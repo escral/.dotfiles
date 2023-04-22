@@ -94,9 +94,10 @@ focus_follows_mouse no
 
 # Workspaces
 # =============================================
-set $wsCode "1: Code"
+set $wsMainCode "1: Code"
 set $wsBrowser "2: Browser"
 set $wsTerminals "3: Terminals"
+set $wsCode "4: Code"
 
 workspace $wsMainCode output $codeMonitor
 workspace $wsCode output $otherMonitor
