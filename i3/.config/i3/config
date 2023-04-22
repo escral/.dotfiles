@@ -98,15 +98,14 @@ set $wsCode "1: Code"
 set $wsBrowser "2: Browser"
 set $wsTerminals "3: Terminals"
 
-workspace $waMainCode output $codeMonitor
+workspace $wsMainCode output $codeMonitor
 workspace $wsCode output $otherMonitor
 workspace $wsBrowser output $otherMonitor
 workspace $wsTerminals output $otherMonitor
 
 assign [class="^Google-chrome$"] → $wsBrowser
 assign [class="^Code$"] → $wsCode
-assign [class="^Webstorm$"] → $waMainCode
-assign [class="^jetbrains-webstorm$"] → $wsCode
+assign [class="^jetbrains-webstorm$"] → $wsMainCode
 assign [class="^kitty$"] → $wsTerminals
 
 workspace_auto_back_and_forth yes
