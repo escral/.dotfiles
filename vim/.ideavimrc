@@ -17,3 +17,5 @@ sethandler <C-N> a:ide
 sethandler <C-U> a:ide
 sethandler <C-A> a:ide
 sethandler <C-K> a:ide
+
+source ~/.vim_profile

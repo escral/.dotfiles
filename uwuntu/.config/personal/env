@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 
 export STOW_FOLDERS="bin,kitty,uwuntu,i3,zsh,fonts,rofi,fonts,fzf,vim"
+export DOTFILES=$HOME/.dotfiles
 
 increaseWatchers() {
     sudo sysctl fs.inotify.max_user_watches=65536

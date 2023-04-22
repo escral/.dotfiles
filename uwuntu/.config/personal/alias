@@ -16,5 +16,4 @@ alias copy="kitty +kitten clipboard"
 # shellcheck disable=SC2142
 alias my_ip="ip address | grep -o \"inet 192.*/\" | awk '{ print \$2 }' | tr / ' ' | xargs"
 
-#!/usr/bin/env bash
 alias dotFileInstall="$DOTFILES/install"
