@@ -102,7 +102,7 @@ set $wsCode "4: Code"
 workspace $wsMainCode output $codeMonitor
 workspace $wsCode output $otherMonitor
 workspace $wsBrowser output $otherMonitor
-workspace $wsTerminals output $otherMonitor
+workspace $wsTerminals output $codeMonitor
 
 assign [class="^Google-chrome$"] → $wsBrowser
 assign [class="^Code$"] → $wsCode
@@ -125,7 +125,7 @@ focus_on_window_activation focus
 # font pango:FiraCode Nerd Font 10 
 
 for_window [class="^.*"] title_window_icon no
-for_window [class="^.*"] title_format " <span>%title</span>"
+for_window [class="^.*"] title_format " %title"
 
 for_window [floating] border pixel 2
 # for_window [class="^jetbrains-webstorm$"] floating enable

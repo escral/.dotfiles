@@ -10,9 +10,9 @@ export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 source "$PERSONAL"/env
 
-#for i in $(find -L "$PERSONAL"); do
-#    source $i
-#done
+for i in $(find -L "$PERSONAL"); do
+   source $i
+done
 
 find -L "$PERSONAL" -type f -name "*.zsh" -exec source {} \;
 
