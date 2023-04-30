@@ -78,15 +78,19 @@ return {
           
           renderer = {
             root_folder_label = false,
-            highlight_git = true,
+            highlight_git = false,
             indent_markers = {
               enable = true,
             }
           },
 
           filters = {
-            dotfiles = true,
-          },
+            custom = {
+              '^\\.git',
+              '^\\node_modules',
+              '^\\.idea'
+            }
+          },  
       })
     end,
   },
@@ -110,11 +114,11 @@ return {
       setKey('<C-w>', '<Cmd>BufferClose<CR>', opts, { 'n', 'v', 't' })
       setKey('<A-w>', '<Cmd>BufferClose<CR>', opts)
 
-      -- Alt + P to pin/unpin tab in all modes
-      setKey('<A-p>', '<Cmd>BufferPin<CR>', opts)
+      -- Pin/unpin tab in all modes
+     setKey('<leader>bp', '<Cmd>BufferPin<CR>', {  noremap = true, silent = true, desc = '[B]uffer [P]ick' }, { 'n', 'v' })
 
       -- Pick buffer in all modes
-      setKey('<A-f>', '<Cmd>BufferPick<CR>', opts)
+      setKey('<leader>bn', '<Cmd>BufferPick<CR>', {  noremap = true, silent = true, desc = '[B]uffer [N]avigate' }, { 'n', 'v' })
 
       -- Search buffer in all modes
       setKey('<A-b>', '<Cmd>BufferOrderByBufferNumber<CR>', opts)
@@ -139,5 +143,46 @@ return {
         autoload = true, -- automatically load the session for the cwd on Neovim startup
       })
     end,
-  }
+  },
+
+  -- Copilot
+  {
+   'zbirenbaum/copilot.lua',
+    config = function() 
+      require('copilot').setup({
+        panel = {
+          enabled = false,
+        },
+        suggestion = {
+          enabled = true,
+          auto_trigger = true,
+          debounce = 75,
+          keymap = {
+            accept = "<A-CR>",
+            accept_word = false,
+            accept_line = false,
+            next = "<M-]>",
+            prev = "<M-[>",
+            -- dismiss = "<Esc>",
+          },
+        },
+        filetypes = {
+          typescript = true,
+          javascript = true,
+          vue = true,
+          yaml = false,
+          markdown = false,
+          help = false,
+          gitcommit = true,
+          gitrebase = false,
+          hgcommit = false,
+          svn = false,
+          cvs = false,
+          ["."] = false,
+        },
+        copilot_node_command = 'node', -- Node.js version must be > 16.x
+        server_opts_overrides = {},
+      })
+    end,
+  },
 }

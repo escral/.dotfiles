@@ -291,6 +291,10 @@ vim.keymap.set('n', '<C-x>', '"+dd')
 vim.keymap.set({ 'v' }, '<C-c>', '"+y')
 vim.keymap.set({ 'v' }, '<C-x>', '"+c')
 
+-- Shift + Tab to unindent in visual mode
+vim.keymap.set({ 'v' }, '<S-Tab>', '<gv', { silent = true })
+vim.keymap.set({ 'v' }, '<Tab>', '>gv', { silent = true })
+
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
@@ -344,6 +348,17 @@ require('telescope').setup {
       },
     },
 
+    vimgrep_arguments = {
+      'rg', 
+      '--hidden', 
+      '--color=never', 
+      '--no-heading', 
+      '--with-filename', 
+      '--line-number', 
+      '--column', 
+      '--smart-case',
+    },
+
     history = {
       path = '~/.local/share/nvim/databases/telescope_history.sqlite3',
       limit = 100,
@@ -377,22 +392,13 @@ require('telescope').setup {
        
       -- local ext = vim.fn.fnamemodify(path, ":e")
 
-      return string.format("%-26s  %s", tail, truncatedFromBeginning)
+      return string.format(" %-26s  %s", tail, truncatedFromBeginning)
     end,
   
     file_ignore_patterns = { "node_modules/", ".git/", ".cache/", "dist/", "^vendor/" },
       
     theme = {
       prompt_title = { fg = "#ff0000", bg = "#00ff00" },
-      my_colors = {
-        bg = "#222222",
-        fg = "#ffffff",
-        border = "#444444",
-        prompt_bg = "#333333",
-        prompt_fg = "#ffffff",
-        selection_bg = "#444444",
-        selection_fg = "#ffffff",
-      }
     },
 
     sorting_strategy = "ascending",
@@ -401,6 +407,8 @@ require('telescope').setup {
         prompt_position = "top",
       },
     },
+
+    hidden = true,
 
     extensions = {
       persisted = {
@@ -426,10 +434,14 @@ vim.keymap.set('n', '<leader>/', function()
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
 
+local findFiles = function ()
+  require('telescope.builtin').find_files({ hidden = true })
+end
+
 -- Bind ctrl-p to telescope
-vim.keymap.set({ 'n', 'v', 't'}, '<leader>p', require('telescope.builtin').find_files, { desc = '[P]ick file' })
-vim.keymap.set({ 'n', 'v', 't', 'i'}, '<A-p>', require('telescope.builtin').find_files, { desc = '[P]ick file' })
-vim.keymap.set({ 'n', 'v', 't', 'i'}, '<C-p>', require('telescope.builtin').find_files, { desc = '[P]ick file' })
+vim.keymap.set({ 'n', 'v', 't'}, '<leader>p', findFiles, { desc = '[P]ick file' })
+vim.keymap.set({ 'n', 'v', 't', 'i'}, '<A-p>', findFiles, { desc = '[P]ick file' })
+vim.keymap.set({ 'n', 'v', 't', 'i'}, '<C-p>', findFiles, { desc = '[P]ick file' })
 
 vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
@@ -455,11 +467,11 @@ require('nvim-treesitter.configs').setup {
 
   highlight = { 
     enable = true,
- },
+  },
   indent = { 
     enable = true, 
     disable = { 'python' },
-   },
+  },
   incremental_selection = {
     enable = true,
     keymaps = {
@@ -639,28 +651,28 @@ cmp.setup {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
     },
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
+    -- ['<Tab>'] = cmp.mapping(function(fallback)
+    --   if cmp.visible() then
+    --     cmp.select_next_item()
+    --   elseif luasnip.expand_or_jumpable() then
+    --     luasnip.expand_or_jump()
+    --   else
+    --     fallback()
+    --   end
+    -- end, { 'i', 's' }),
+    -- ['<S-Tab>'] = cmp.mapping(function(fallback)
+    --   if cmp.visible() then
+    --     cmp.select_prev_item()
+    --   elseif luasnip.jumpable(-1) then
+    --     luasnip.jump(-1)
+    --   else
+    --     fallback()
+    --   end
+    -- end, { 'i', 's' }),
   },
   sources = {
-    { name = 'nvim_lsp' },
-    { name = 'luasnip' },
+    { name = 'nvim_lsp', max_item_count = 15 },
+    { name = 'luasnip', max_item_count = 15 },
   },
 }
 

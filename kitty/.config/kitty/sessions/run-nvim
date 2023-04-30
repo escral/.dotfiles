@@ -1,0 +1,5 @@
+kitty @ set-spacing padding=0
+kitty @ set-window-title nvim
+
+nvim
+
