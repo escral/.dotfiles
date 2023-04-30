@@ -36,6 +36,12 @@ I hope you enjoy your Neovim journey,
 P.S. You can delete this when you're done too. It's your config now :)
 --]]
 
+local setKey = function(key, value, opts, modes)
+  modes = modes or { 'n', 'i', 'v', 't' }
+  
+  vim.keymap.set(modes, key, value, opts)
+end
+
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
@@ -147,16 +153,45 @@ require('lazy').setup({
     -- Enable `lukas-reineke/indent-blankline.nvim`
     -- See `:help indent_blankline.txt`
     opts = {
-      char = '┊',
+      -- lua array of chars, which can be used as a fallback indent marker
+      indent_blankline_char_list = {'|', '¦', '┆', '┊'},
       show_trailing_blankline_indent = false,
     },
   },
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {} },
+  { 
+    'numToStr/Comment.nvim', 
+    config = function()
+      require('Comment').setup()
+      setKey('<C-/>', '<Plug>(comment_toggle_linewise_current)', { noremap = false }, { 'n', 'i' })
+      setKey('<C-/>', '<Plug>(comment_toggle_linewise_visual)', { noremap = false }, { 'v' })
+    end
+  },
 
   -- Fuzzy Finder (files, lsp, etc)
-  { 'nvim-telescope/telescope.nvim', version = '*', dependencies = { 'nvim-lua/plenary.nvim' } },
+  { 
+    'nvim-telescope/telescope.nvim', 
+    version = '*', 
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      require('telescope').setup {
+        defaults = {
+          mappings = {
+            i = {
+              ["<esc>"] = require('telescope.actions').close,
+            },
+          },
+        },
+
+        extensions = {
+          persisted = {
+            layout_config = { width = 0.55, height = 0.55 }
+          }
+        }
+      }
+    end,
+   },
 
   -- Fuzzy Finder Algorithm which requires local dependencies to be built.
   -- Only load if `make` is available. Make sure you have the system
@@ -173,10 +208,11 @@ require('lazy').setup({
 
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter-textobjects',
+      dependencies = {
+        'nvim-treesitter/nvim-treesitter-textobjects',
+        'JoosepAlviste/nvim-ts-context-commentstring',
+      build = ":TSUpdate",
     },
-    build = ":TSUpdate",
   },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
@@ -200,7 +236,7 @@ require('lazy').setup({
 -- See `:help vim.o`
 
 -- Set highlight on search
-vim.o.hlsearch = false
+vim.o.hlsearch = true
 
 -- Make line numbers default
 vim.wo.number = true
@@ -211,7 +247,7 @@ vim.o.mouse = 'a'
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.o.clipboard = 'unnamedplus'
+-- vim.o.clipboard = 'unnamedplus'
 
 -- Enable break indent
 vim.o.breakindent = true
@@ -253,6 +289,20 @@ vim.keymap.set({ 'n', 'i', 'v', 't' }, '<C-S-z>', '<Cmd>redo<CR>', { silent = tr
 
 -- Ctrl + S to save in all modes
 vim.keymap.set({ 'n', 'i', 'v', 't' }, '<C-s>', '<Cmd>w<CR>')
+
+-- Ctrl + Backspace to delete previous word in insert mode
+vim.keymap.set('i', '<C-BS>', '<C-w>', { noremap = true, silent = true })
+
+-- Ctrl + Delete to delete to end of word in insert mode
+vim.keymap.set('i', '<C-Del>', '<C-o>"ddw', { noremap = true, silent = true })
+
+-- Line Copy/Cut in normal mode
+vim.keymap.set('n', '<C-c>', '"+yy')
+vim.keymap.set('n', '<C-x>', '"+dd')
+
+-- Sync with system clipboard
+vim.keymap.set({ 'v' }, '<C-c>', '"+y')
+vim.keymap.set({ 'v' }, '<C-x>', '"+c')
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -302,6 +352,7 @@ require('telescope').setup {
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
+pcall(require('telescope').load_extension, 'persisted')
 
 -- See `:help telescope.builtin`
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
@@ -315,8 +366,9 @@ vim.keymap.set('n', '<leader>/', function()
 end, { desc = '[/] Fuzzily search in current buffer' })
 
 -- Bind ctrl-p to telescope
-vim.keymap.set({ 'n', 'v', 't', 'i'}, '<leader>p', require('telescope.builtin').find_files, { desc = '[P]ick file' })
+vim.keymap.set({ 'n', 'v', 't'}, '<leader>p', require('telescope.builtin').find_files, { desc = '[P]ick file' })
 vim.keymap.set({ 'n', 'v', 't', 'i'}, '<A-p>', require('telescope.builtin').find_files, { desc = '[P]ick file' })
+vim.keymap.set({ 'n', 'v', 't', 'i'}, '<C-p>', require('telescope.builtin').find_files, { desc = '[P]ick file' })
 
 vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
@@ -324,18 +376,29 @@ vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
+vim.keymap.set('n', '<leader>sr', require('telescope.builtin').oldfiles, { desc = '[S]earch [R]ecent Files' })
+vim.keymap.set('n', '<C-r>', require('telescope.builtin').lsp_document_symbols, { desc = '[S]earch [S]ymbols' })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim' },
+  ensure_installed = { 'lua', 'tsx', 'typescript', 'javascript', 'vimdoc', 'vim', 'php', 'vue', 'scss', 'html', 'tsx', 'twig' },
+
+  context_commentstring = {
+    enable = true,
+  },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
   auto_install = false,
 
-  highlight = { enable = true },
-  indent = { enable = true, disable = { 'python' } },
+  highlight = { 
+    enable = true,
+ },
+  indent = { 
+    enable = true, 
+    disable = { 'python' },
+   },
   incremental_selection = {
     enable = true,
     keymaps = {

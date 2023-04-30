@@ -103,11 +103,11 @@ return {
       local opts = { noremap = true, silent = true }
 
       -- Alt + J/K to move between tabs in all modes
-      setKey('<A-j>', '<Cmd>BufferNext<CR>', opts)
-      setKey('<A-k>', '<Cmd>BufferPrevious<CR>', opts)
+      setKey('<A-j>', '<Cmd>BufferPrevious<CR>', opts)
+      setKey('<A-k>', '<Cmd>BufferNext<CR>', opts)
 
       -- Ctrl/Alt + W to close tab in all modes
-      setKey('<C-w>', '<Cmd>BufferClose<CR>', opts)
+      setKey('<C-w>', '<Cmd>BufferClose<CR>', opts, { 'n', 'v', 't' })
       setKey('<A-w>', '<Cmd>BufferClose<CR>', opts)
 
       -- Alt + P to pin/unpin tab in all modes
@@ -131,8 +131,13 @@ return {
 
   -- Remember opened tabs
   {
-    'folke/persistence.nvim',
-    event = 'BufReadPre',
-    module = 'persistence',
+    "olimorris/persisted.nvim",
+    config = function()
+      require("persisted").setup({
+        silent = true, -- silent nvim message when sourcing session file
+        autosave = true, -- automatically save session files when exiting Neovim
+        autoload = true, -- automatically load the session for the cwd on Neovim startup
+      })
+    end,
   }
 }
