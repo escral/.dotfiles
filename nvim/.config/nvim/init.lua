@@ -174,23 +174,6 @@ require('lazy').setup({
     'nvim-telescope/telescope.nvim', 
     version = '*', 
     dependencies = { 'nvim-lua/plenary.nvim' },
-    config = function()
-      require('telescope').setup {
-        defaults = {
-          mappings = {
-            i = {
-              ["<esc>"] = require('telescope.actions').close,
-            },
-          },
-        },
-
-        extensions = {
-          persisted = {
-            layout_config = { width = 0.55, height = 0.55 }
-          }
-        }
-      }
-    end,
    },
 
   -- Fuzzy Finder Algorithm which requires local dependencies to be built.
@@ -213,6 +196,10 @@ require('lazy').setup({
         'JoosepAlviste/nvim-ts-context-commentstring',
       build = ":TSUpdate",
     },
+  },
+
+  {
+    'kkharji/sqlite.lua',
   },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
@@ -318,6 +305,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
 local telescopeActions = require('telescope.actions')
+local telescopeUtils = require('telescope.utils')
 
 require('telescope').setup {
   defaults = {
@@ -327,32 +315,105 @@ require('telescope').setup {
         ['<C-d>'] = false,
         ['<Tab>'] = telescopeActions.select_default,
         ['<Return>'] = telescopeActions.select_tab,
-        -- Inverted because the popup is mirrored
-        ["<C-k>"] = {
-          telescopeActions.move_selection_next, type = "action",
-          opts = { nowait = true, silent = true }
-        },
-        ["<A-k>"] = {
-          telescopeActions.move_selection_next, type = "action",
-          opts = { nowait = true, silent = true }
-        },
-        -- Inverted because the popup is mirrored
         ["<C-j>"] = {
-          telescopeActions.move_selection_previous, type = "action",
+          telescopeActions.move_selection_next, type = "action",
           opts = { nowait = true, silent = true }
         },
         ["<A-j>"] = {
+          telescopeActions.move_selection_next, type = "action",
+          opts = { nowait = true, silent = true }
+        },
+        -- Inverted because the popup is mirrored
+        ["<C-k>"] = {
           telescopeActions.move_selection_previous, type = "action",
           opts = { nowait = true, silent = true }
         },
+        ["<A-k>"] = {
+          telescopeActions.move_selection_previous, type = "action",
+          opts = { nowait = true, silent = true }
+        },
+        ["<Esc>"] = require('telescope.actions').close,
+        ["<A-Down>"] = require('telescope.actions').cycle_history_next,
+        ["<A-Up>"] = require('telescope.actions').cycle_history_prev,
+
+        ['<C-BS>'] = function(prompt_bufnr)
+          vim.cmd ":normal! db"
+        end,
+
+        ['<C-v>'] = false,
       },
     },
+
+    history = {
+      path = '~/.local/share/nvim/databases/telescope_history.sqlite3',
+      limit = 100,
+    },
+
+    prompt_prefix='',
+    selection_caret='❯ ',
+    entry_prefix='  ',
+    results_title=false,
+
+    path_display = function(opts, path)
+      local tail = telescopeUtils.path_tail(path)
+
+      -- Split path by slash
+      -- Get first and last 3 elements
+      -- Join them with slash, inserting ... in the middle if needed
+      local parts = vim.split(path, "/")
+
+      local truncatedFromBeginning = path 
+      
+      if (#parts > 1) then
+        vim.list_slice(parts, 0, #parts - 1)
+      end
+
+      if #parts > 7 then
+        local first = table.concat(vim.list_slice(parts, 0, 1), "/")
+        local last = table.concat(vim.list_slice(parts, #parts - 5, #parts - 1), "/")
+        
+        truncatedFromBeginning = string.format("%s/../%s", first, last)
+      end
+       
+      -- local ext = vim.fn.fnamemodify(path, ":e")
+
+      return string.format("%-26s  %s", tail, truncatedFromBeginning)
+    end,
+  
+    file_ignore_patterns = { "node_modules/", ".git/", ".cache/", "dist/", "^vendor/" },
+      
+    theme = {
+      prompt_title = { fg = "#ff0000", bg = "#00ff00" },
+      my_colors = {
+        bg = "#222222",
+        fg = "#ffffff",
+        border = "#444444",
+        prompt_bg = "#333333",
+        prompt_fg = "#ffffff",
+        selection_bg = "#444444",
+        selection_fg = "#ffffff",
+      }
+    },
+
+    sorting_strategy = "ascending",
+    layout_config = {
+      horizontal = {
+        prompt_position = "top",
+      },
+    },
+
+    extensions = {
+      persisted = {
+        layout_config = { width = 0.55, height = 0.55 }
+      }
+    }
   },
 }
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
 pcall(require('telescope').load_extension, 'persisted')
+pcall(require('telescope').load_extension, 'smart_history')
 
 -- See `:help telescope.builtin`
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
