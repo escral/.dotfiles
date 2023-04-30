@@ -129,7 +129,11 @@ return {
       end
     end,
     opts = {
+      animation = false,
       auto_hide = true,
+      maximum_padding = 1,
+      minimum_padding = 1,
+      no_name_title = "[New File]",
     },
   },
 
@@ -170,6 +174,8 @@ return {
           typescript = true,
           javascript = true,
           vue = true,
+          zsh = true,
+          shell = true,
           yaml = false,
           markdown = false,
           help = false,

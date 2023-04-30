@@ -2,6 +2,7 @@
 
 # General 
 alias ff='fzm'
+alias ffp='fzm | open-project-nvim'
 alias www="cd ~/www"
 
 # PHP

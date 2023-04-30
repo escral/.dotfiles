@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+source ~/.zshrc
+
+fzm | open-project-nvim
