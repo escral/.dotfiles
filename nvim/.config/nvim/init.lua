@@ -64,6 +64,15 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+
+
+-- Auto Save
+vim.api.nvim_create_autocmd({'FocusLost'}, {
+  command = 'silent! wa'
+})
+
+
+
 -- NOTE: Here is where you install your plugins.
 --  You can configure plugins using the `config` key.
 --
@@ -163,8 +172,11 @@ require('lazy').setup({
   { 
     'numToStr/Comment.nvim', 
     config = function()
-      require('Comment').setup()
-      setKey('<C-/>', '<Plug>(comment_toggle_linewise_current)', { noremap = false }, { 'n', 'i' })
+      require('Comment').setup({
+        sticky = true,
+        padding = true,
+      })
+      setKey('<C-/>', '<Plug>(comment_toggle_linewise_current)j', { noremap = false }, { 'n', 'i' })
       setKey('<C-/>', '<Plug>(comment_toggle_linewise_visual)', { noremap = false }, { 'v' })
     end
   },
@@ -286,6 +298,8 @@ vim.keymap.set('i', '<C-Del>', '<C-o>"ddw', { noremap = true, silent = true })
 -- Line Copy/Cut in normal mode
 vim.keymap.set('n', '<C-c>', '"+yy')
 vim.keymap.set('n', '<C-x>', '"+dd')
+vim.keymap.set('i', '<C-c>', '<Esc>"+yyi')
+vim.keymap.set('i', '<C-x>', '<Esc>"+ddi')
 
 -- Sync with system clipboard
 vim.keymap.set({ 'v' }, '<C-c>', '"+y')
@@ -294,6 +308,51 @@ vim.keymap.set({ 'v' }, '<C-x>', '"+c')
 -- Shift + Tab to unindent in visual mode
 vim.keymap.set({ 'v' }, '<S-Tab>', '<gv', { silent = true })
 vim.keymap.set({ 'v' }, '<Tab>', '>gv', { silent = true })
+
+vim.keymap.set({ 'n' }, '<S-Tab>', 'v<n', { silent = true })
+vim.keymap.set({ 'n' }, '<Tab>', 'v>n', { silent = true })
+
+vim.keymap.set({ 'i' }, '<S-Tab>', '<C-o><gv', { silent = true })
+
+-- Shift + Arrow to select text
+vim.keymap.set({ 'n' }, '<S-Up>', 'v<Up>', { silent = true })
+vim.keymap.set({ 'n' }, '<S-Down>', 'v<Down>', { silent = true })
+vim.keymap.set({ 'n' }, '<S-Left>', 'v<Left>', { silent = true })
+vim.keymap.set({ 'n' }, '<S-Right>', 'v<Right>', { silent = true })
+
+vim.keymap.set({ 'v' }, '<S-Up>', '<Up>', { silent = true })
+vim.keymap.set({ 'v' }, '<S-Down>', '<Down>', { silent = true })
+vim.keymap.set({ 'v' }, '<S-Right>', '<Right>', { silent = true })
+vim.keymap.set({ 'v' }, '<S-Left>', '<Left>', { silent = true })
+
+vim.keymap.set({ 'i' }, '<S-Up>', '<C-o>v<Up>', { silent = true })
+vim.keymap.set({ 'i' }, '<S-Down>', '<C-o>v<Down>', { silent = true })
+vim.keymap.set({ 'i' }, '<S-Left>', '<C-o>v<Left>', { silent = true })
+vim.keymap.set({ 'i' }, '<S-Right>', '<C-o>v<Right>', { silent = true })
+
+-- Shift + Ctrl + Arrow to select text
+vim.keymap.set({ 'n' }, '<S-C-Up>', 'v<C-Up>', { silent = true })
+vim.keymap.set({ 'n' }, '<S-C-Down>', 'v<C-Down>', { silent = true })
+vim.keymap.set({ 'n' }, '<S-C-Left>', 'v<C-Left>', { silent = true })
+vim.keymap.set({ 'n' }, '<S-C-Right>', 'v<C-Right>', { silent = true })
+
+vim.keymap.set({ 'v' }, '<S-C-Up>', 'k', { silent = true })
+vim.keymap.set({ 'v' }, '<S-C-Down>', 'j', { silent = true })
+vim.keymap.set({ 'v' }, '<S-C-Right>', 'e', { silent = true })
+vim.keymap.set({ 'v' }, '<S-C-Left>', 'b', { silent = true })
+
+vim.keymap.set({ 'i' }, '<S-C-Up>', '<C-o>v<C-Up>', { silent = true })
+vim.keymap.set({ 'i' }, '<S-C-Down>', '<C-o>v<C-Down>', { silent = true })
+vim.keymap.set({ 'i' }, '<S-C-Left>', '<C-o>v<C-Left>', { silent = true })
+vim.keymap.set({ 'i' }, '<S-C-Right>', '<C-o>v<C-Right>', { silent = true })
+
+-- Ctrl + Arrow to move cursor as in normal editor
+vim.keymap.set({ 'n' }, '<C-Up>', '5k', { silent = true })
+vim.keymap.set({ 'n' }, '<C-Down>', '5j', { silent = true })
+vim.keymap.set({ 'n' }, '<C-Right>', 'e', { silent = true })
+vim.keymap.set({ 'n' }, '<C-Left>', 'b', { silent = true })
+
+
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -318,7 +377,7 @@ require('telescope').setup {
         ['<C-u>'] = false,
         ['<C-d>'] = false,
         ['<Tab>'] = telescopeActions.select_default,
-        ['<Return>'] = telescopeActions.select_tab,
+        ['<Return>'] = telescopeActions.select_default,
         ["<C-j>"] = {
           telescopeActions.move_selection_next, type = "action",
           opts = { nowait = true, silent = true }
@@ -346,17 +405,6 @@ require('telescope').setup {
 
         ['<C-v>'] = false,
       },
-    },
-
-    vimgrep_arguments = {
-      'rg', 
-      '--hidden', 
-      '--color=never', 
-      '--no-heading', 
-      '--with-filename', 
-      '--line-number', 
-      '--column', 
-      '--smart-case',
     },
 
     history = {
@@ -413,6 +461,13 @@ require('telescope').setup {
     extensions = {
       persisted = {
         layout_config = { width = 0.55, height = 0.55 }
+      },
+      fzf = {
+        fuzzy = true,                    -- false will only do exact matching
+        override_generic_sorter = true,  -- override the generic sorter
+        override_file_sorter = true,     -- override the file sorter
+        case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+                                          -- the default case_mode is "smart_case"
       }
     }
   },
@@ -553,10 +608,11 @@ local on_attach = function(_, bufnr)
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
-  nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+  nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
   nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
   nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
+  nmap('<C-b>', vim.lsp.buf.type_definition, 'Type [D]efinition')
   nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
   nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 

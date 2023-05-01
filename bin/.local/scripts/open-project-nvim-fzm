@@ -2,4 +2,6 @@
 
 source ~/.zshrc
 
-fzm | open-project-nvim
+dir=$(fzm)
+
+open-project-nvim $dir

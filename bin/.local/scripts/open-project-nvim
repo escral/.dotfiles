@@ -1,6 +1,11 @@
 #!/usr/bin/env zsh
 
-dir=$(cat)
+dir=$1
+
+# If no argument is given, open nvim in the current directory
+if [[ -z $dir ]]; then
+    dir=$(pwd)
+fi
 
 cd $dir
 

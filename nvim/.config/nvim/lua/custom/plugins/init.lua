@@ -5,11 +5,28 @@
 
 -- if modes prop not set, use  { 'n', 'i', 'v', 't' } by default
 
-local setKey = function(key, value, opts, modes)
+local setKey = function(key, value, opts, modes, propagate)
   modes = modes or { 'n', 'i', 'v', 't' }
+  propagate = propagate or false
   
+  local valueResult
+
+  -- If value is a function, call it and use its return value as the value
+  if type(value) == 'function' then
+    local cb = value
+    value = function()
+      valueResult = cb()
+      
+      if valueResult ~= false then
+        vim.fn.feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), 'n')
+      end
+    end
+  end  
+
   vim.keymap.set(modes, key, value, opts)
 end
+
+
 
 return {
   -- Theme
@@ -72,22 +89,24 @@ return {
     config = function()
       local api = require("nvim-tree.api")
       require("nvim-tree").setup({
-          setKey('<A-1>', function()
+          setKey('<A-b>', function()
             api.tree.toggle()
           end, { noremap = true, silent = true }),
-          
+        
+          view = {
+            width = 50,
+          },
           renderer = {
-            root_folder_label = false,
+            root_folder_label = ":~:s?$??",
             highlight_git = false,
             indent_markers = {
-              enable = true,
+              enable = false,
             }
           },
 
           filters = {
             custom = {
               '^\\.git',
-              '^\\node_modules',
               '^\\.idea'
             }
           },  
@@ -111,17 +130,15 @@ return {
       setKey('<A-k>', '<Cmd>BufferNext<CR>', opts)
 
       -- Ctrl/Alt + W to close tab in all modes
-      setKey('<C-w>', '<Cmd>BufferClose<CR>', opts, { 'n', 'v', 't' })
+      -- setKey('<C-w>', '<Cmd>BufferClose<CR>', opts, { 'n', 'v', 't' })
       setKey('<A-w>', '<Cmd>BufferClose<CR>', opts)
+      setKey('<S-A-w>', '<Cmd>BufferCloseAllButCurrent<CR>', opts)
 
       -- Pin/unpin tab in all modes
-     setKey('<leader>bp', '<Cmd>BufferPin<CR>', {  noremap = true, silent = true, desc = '[B]uffer [P]ick' }, { 'n', 'v' })
+      setKey('<leader>bp', '<Cmd>BufferPin<CR>', {  noremap = true, silent = true, desc = '[B]uffer [P]in' }, { 'n', 'v', 't' })
 
       -- Pick buffer in all modes
-      setKey('<leader>bn', '<Cmd>BufferPick<CR>', {  noremap = true, silent = true, desc = '[B]uffer [N]avigate' }, { 'n', 'v' })
-
-      -- Search buffer in all modes
-      setKey('<A-b>', '<Cmd>BufferOrderByBufferNumber<CR>', opts)
+      setKey('<leader>bn', '<Cmd>BufferPick<CR>', {  noremap = true, silent = true, desc = '[B]uffer [N]avigate' }, { 'n', 'v', 't' })
 
       -- Alt - {Number} to go to tab in all modes
       for i = 1, 9 do
@@ -134,6 +151,7 @@ return {
       maximum_padding = 1,
       minimum_padding = 1,
       no_name_title = "[New File]",
+      hide = {extensions = false, inactive = false},
     },
   },
 
@@ -149,11 +167,26 @@ return {
     end,
   },
 
+  -- Some
   -- Copilot
   {
    'zbirenbaum/copilot.lua',
     config = function() 
       require('copilot').setup({
+        setKey('<Esc>', function() 
+          if require('copilot.suggestion').is_visible() then
+            require('copilot.suggestion').dismiss()
+            return false
+          end
+        end, { noremap = true, silent = true }, { 'i' }, true),
+        
+        setKey('<Tab>', function() 
+          if require('copilot.suggestion').is_visible() then
+            require('copilot.suggestion').accept_line()
+            return false
+          end
+        end, { noremap = true, silent = true }, { 'i' }, true),
+             
         panel = {
           enabled = false,
         },
@@ -162,12 +195,12 @@ return {
           auto_trigger = true,
           debounce = 75,
           keymap = {
-            accept = "<A-CR>",
+            accept = false,
             accept_word = false,
             accept_line = false,
             next = "<M-]>",
             prev = "<M-[>",
-            -- dismiss = "<Esc>",
+            dismiss = false,
           },
         },
         filetypes = {
@@ -185,10 +218,27 @@ return {
           svn = false,
           cvs = false,
           ["."] = false,
+            sh = function ()
+              if string.match(vim.fs.basename(vim.api.nvim_buf_get_name(0)), '^%.env.*') then
+                -- disable for .env files
+                return false
+              end
+              return true
+            end,
         },
         copilot_node_command = 'node', -- Node.js version must be > 16.x
         server_opts_overrides = {},
       })
     end,
   },
+
+  -- Multicursor
+  {
+    'mg979/vim-visual-multi',
+    branch = 'master',
+    config = function() 
+      -- Disable multicursor default mappings
+      vim.g.VM_default_mappings = 0
+    end
+  }
 }
