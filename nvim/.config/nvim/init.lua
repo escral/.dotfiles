@@ -291,6 +291,8 @@ vim.keymap.set({ 'n', 'i', 'v', 't' }, '<C-s>', '<Cmd>w<CR>')
 
 -- Ctrl + Backspace to delete previous word in insert mode
 vim.keymap.set('i', '<C-BS>', '<C-w>', { noremap = true, silent = true })
+-- Ctrl + Backspace in command mode
+vim.keymap.set('c', '<C-BS>', '<C-u><BS>', { noremap = true, silent = true })
 
 -- Ctrl + Delete to delete to end of word in insert mode
 vim.keymap.set('i', '<C-Del>', '<C-o>"ddw', { noremap = true, silent = true })
@@ -352,7 +354,8 @@ vim.keymap.set({ 'n' }, '<C-Down>', '5j', { silent = true })
 vim.keymap.set({ 'n' }, '<C-Right>', 'e', { silent = true })
 vim.keymap.set({ 'n' }, '<C-Left>', 'b', { silent = true })
 
-
+-- Formatter
+vim.keymap.set('n', '<C-S-l>', ':silent :w<CR>:silent !npx eslint --fix %<CR>', {noremap = true})
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -443,7 +446,7 @@ require('telescope').setup {
       return string.format(" %-26s  %s", tail, truncatedFromBeginning)
     end,
   
-    file_ignore_patterns = { "node_modules/", ".git/", ".cache/", "dist/", "^vendor/" },
+    file_ignore_patterns = { "node_modules/", ".git/", ".vscode", ".cache/", "dist/", "^vendor/" },
       
     theme = {
       prompt_title = { fg = "#ff0000", bg = "#00ff00" },

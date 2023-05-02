@@ -107,6 +107,7 @@ return {
           filters = {
             custom = {
               '^\\.git',
+              '^\\.vscode',
               '^\\.idea'
             }
           },  
@@ -240,5 +241,10 @@ return {
       -- Disable multicursor default mappings
       vim.g.VM_default_mappings = 0
     end
+  },
+
+  { 
+    'sindrets/diffview.nvim',
+    requires = 'nvim-lua/plenary.nvim',
   }
 }
