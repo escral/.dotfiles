@@ -35,10 +35,9 @@ I hope you enjoy your Neovim journey,
 
 P.S. You can delete this when you're done too. It's your config now :)
 --]]
-
 local setKey = function(key, value, opts, modes)
   modes = modes or { 'n', 'i', 'v', 't' }
-  
+
   vim.keymap.set(modes, key, value, opts)
 end
 
@@ -67,11 +66,15 @@ vim.opt.rtp:prepend(lazypath)
 
 
 -- Auto Save
-vim.api.nvim_create_autocmd({'FocusLost'}, {
+vim.api.nvim_create_autocmd({ 'FocusLost' }, {
   command = 'silent! wa'
 })
 
-
+-- vim.opt.smartindent = true
+-- vim.opt.autoindent = true
+-- vim.opt.expandtab = true
+-- vim.opt.shiftwidth = 4
+-- vim.opt.tabstop = 4
 
 -- NOTE: Here is where you install your plugins.
 --  You can configure plugins using the `config` key.
@@ -90,7 +93,8 @@ require('lazy').setup({
 
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
-  { -- LSP Configuration & Plugins
+  {
+    -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
     dependencies = {
       -- Automatically install LSPs to stdpath for neovim
@@ -99,21 +103,28 @@ require('lazy').setup({
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', opts = {} },
+      { 'j-hui/fidget.nvim',       opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
     },
   },
 
-  { -- Autocompletion
+  {
+    -- Autocompletion
     'hrsh7th/nvim-cmp',
-    dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
+    dependencies = {
+      'hrsh7th/cmp-nvim-lsp',
+      'L3MON4D3/LuaSnip',
+      'saadparwaiz1/cmp_luasnip',
+      'rafamadriz/friendly-snippets',
+    },
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
-  { -- Adds git releated signs to the gutter, as well as utilities for managing changes
+  { 'folke/which-key.nvim',   opts = {} },
+  {
+    -- Adds git releated signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
     opts = {
       -- See `:help gitsigns.txt`
@@ -135,7 +146,8 @@ require('lazy').setup({
   --   end,
   -- },
 
-  { -- Set lualine as statusline
+  {
+    -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
 
     -- See `:help lualine.txt`
@@ -147,30 +159,35 @@ require('lazy').setup({
         section_separators = '',
       },
       sections = {
-        lualine_a = {'mode'},
-        lualine_b = {'branch', 'diff', 'diagnostics'},
-        lualine_c = {'filename'},
+        lualine_a = { 'mode' },
+        lualine_b = { 'branch', 'diff', 'diagnostics' },
+        lualine_c = { 'filename' },
         lualine_x = {},
-        lualine_y = {'filetype'},
-        lualine_z = {'location'}
+        lualine_y = { 'filetype' },
+        lualine_z = { 'location' }
       },
     },
   },
 
-  { -- Add indentation guides even on blank lines
+  {
+    -- Add indentation guides even on blank lines
     'lukas-reineke/indent-blankline.nvim',
     -- Enable `lukas-reineke/indent-blankline.nvim`
     -- See `:help indent_blankline.txt`
     opts = {
       -- lua array of chars, which can be used as a fallback indent marker
-      indent_blankline_char_list = {'|', '¦', '┆', '┊'},
+      indent_blankline_char = '|',
+      indent_blankline_char_blankline = '┆',
+
       show_trailing_blankline_indent = false,
+      show_first_indent_level = true,
+      -- show_current_context = true,
     },
   },
 
   -- "gc" to comment visual regions/lines
-  { 
-    'numToStr/Comment.nvim', 
+  {
+    'numToStr/Comment.nvim',
     config = function()
       require('Comment').setup({
         sticky = true,
@@ -182,11 +199,11 @@ require('lazy').setup({
   },
 
   -- Fuzzy Finder (files, lsp, etc)
-  { 
-    'nvim-telescope/telescope.nvim', 
-    version = '*', 
+  {
+    'nvim-telescope/telescope.nvim',
+    version = '*',
     dependencies = { 'nvim-lua/plenary.nvim' },
-   },
+  },
 
   -- Fuzzy Finder Algorithm which requires local dependencies to be built.
   -- Only load if `make` is available. Make sure you have the system
@@ -201,11 +218,12 @@ require('lazy').setup({
     end,
   },
 
-  { -- Highlight, edit, and navigate code
+  {
+    -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
-      dependencies = {
-        'nvim-treesitter/nvim-treesitter-textobjects',
-        'JoosepAlviste/nvim-ts-context-commentstring',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter-textobjects',
+      'JoosepAlviste/nvim-ts-context-commentstring',
       build = ":TSUpdate",
     },
   },
@@ -213,7 +231,10 @@ require('lazy').setup({
   {
     'kkharji/sqlite.lua',
   },
-
+  {
+    "L3MON4D3/LuaSnip",
+    dependencies = { "rafamadriz/friendly-snippets" },
+  },
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -311,8 +332,8 @@ vim.keymap.set({ 'v' }, '<C-x>', '"+c')
 vim.keymap.set({ 'v' }, '<S-Tab>', '<gv', { silent = true })
 vim.keymap.set({ 'v' }, '<Tab>', '>gv', { silent = true })
 
-vim.keymap.set({ 'n' }, '<S-Tab>', 'v<n', { silent = true })
-vim.keymap.set({ 'n' }, '<Tab>', 'v>n', { silent = true })
+vim.keymap.set({ 'n' }, '<S-Tab>', 'v<', { silent = true })
+vim.keymap.set({ 'n' }, '<Tab>', 'v>', { silent = true })
 
 vim.keymap.set({ 'i' }, '<S-Tab>', '<C-o><gv', { silent = true })
 
@@ -355,7 +376,9 @@ vim.keymap.set({ 'n' }, '<C-Right>', 'e', { silent = true })
 vim.keymap.set({ 'n' }, '<C-Left>', 'b', { silent = true })
 
 -- Formatter
-vim.keymap.set('n', '<C-S-l>', ':silent :w<CR>:silent !npx eslint --fix %<CR>', {noremap = true})
+-- vim.keymap.set('n', '<C-S-l>', ':silent :w<CR>:silent !npx eslint --fix %<CR>', {noremap = true})
+vim.keymap.set({ 'i' }, '<C-S-l>', '<C-o>:Format<CR>', { noremap = true })
+vim.keymap.set({ 'n', 'v' }, '<C-S-l>', ':Format<CR>', { noremap = true })
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -415,10 +438,10 @@ require('telescope').setup {
       limit = 100,
     },
 
-    prompt_prefix='',
-    selection_caret='❯ ',
-    entry_prefix='  ',
-    results_title=false,
+    prompt_prefix = '',
+    selection_caret = '❯ ',
+    entry_prefix = '  ',
+    results_title = false,
 
     path_display = function(opts, path)
       local tail = telescopeUtils.path_tail(path)
@@ -428,8 +451,8 @@ require('telescope').setup {
       -- Join them with slash, inserting ... in the middle if needed
       local parts = vim.split(path, "/")
 
-      local truncatedFromBeginning = path 
-      
+      local truncatedFromBeginning = path
+
       if (#parts > 1) then
         vim.list_slice(parts, 0, #parts - 1)
       end
@@ -437,17 +460,17 @@ require('telescope').setup {
       if #parts > 7 then
         local first = table.concat(vim.list_slice(parts, 0, 1), "/")
         local last = table.concat(vim.list_slice(parts, #parts - 5, #parts - 1), "/")
-        
+
         truncatedFromBeginning = string.format("%s/../%s", first, last)
       end
-       
+
       -- local ext = vim.fn.fnamemodify(path, ":e")
 
       return string.format(" %-26s  %s", tail, truncatedFromBeginning)
     end,
-  
+
     file_ignore_patterns = { "node_modules/", ".git/", ".vscode", ".cache/", "dist/", "^vendor/" },
-      
+
     theme = {
       prompt_title = { fg = "#ff0000", bg = "#00ff00" },
     },
@@ -466,11 +489,11 @@ require('telescope').setup {
         layout_config = { width = 0.55, height = 0.55 }
       },
       fzf = {
-        fuzzy = true,                    -- false will only do exact matching
-        override_generic_sorter = true,  -- override the generic sorter
-        override_file_sorter = true,     -- override the file sorter
-        case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
-                                          -- the default case_mode is "smart_case"
+        fuzzy = true,                   -- false will only do exact matching
+        override_generic_sorter = true, -- override the generic sorter
+        override_file_sorter = true,    -- override the file sorter
+        case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
+        -- the default case_mode is "smart_case"
       }
     }
   },
@@ -492,14 +515,14 @@ vim.keymap.set('n', '<leader>/', function()
   })
 end, { desc = '[/] Fuzzily search in current buffer' })
 
-local findFiles = function ()
+local findFiles = function()
   require('telescope.builtin').find_files({ hidden = true })
 end
 
 -- Bind ctrl-p to telescope
-vim.keymap.set({ 'n', 'v', 't'}, '<leader>p', findFiles, { desc = '[P]ick file' })
-vim.keymap.set({ 'n', 'v', 't', 'i'}, '<A-p>', findFiles, { desc = '[P]ick file' })
-vim.keymap.set({ 'n', 'v', 't', 'i'}, '<C-p>', findFiles, { desc = '[P]ick file' })
+vim.keymap.set({ 'n', 'v', 't' }, '<leader>p', findFiles, { desc = '[P]ick file' })
+vim.keymap.set({ 'n', 'v', 't', 'i' }, '<A-p>', findFiles, { desc = '[P]ick file' })
+vim.keymap.set({ 'n', 'v', 't', 'i' }, '<C-p>', findFiles, { desc = '[P]ick file' })
 
 vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
@@ -514,7 +537,8 @@ vim.keymap.set('n', '<C-r>', require('telescope.builtin').lsp_document_symbols, 
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'lua', 'tsx', 'typescript', 'javascript', 'vimdoc', 'vim', 'php', 'vue', 'scss', 'html', 'tsx', 'twig' },
+  ensure_installed = { 'lua', 'tsx', 'typescript', 'javascript', 'vimdoc', 'vim', 'php', 'vue', 'scss', 'html', 'tsx',
+    'twig' },
 
   context_commentstring = {
     enable = true,
@@ -523,12 +547,11 @@ require('nvim-treesitter.configs').setup {
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
   auto_install = false,
 
-  highlight = { 
+  highlight = {
     enable = true,
   },
-  indent = { 
-    enable = true, 
-    disable = { 'python' },
+  indent = {
+    enable = true,
   },
   incremental_selection = {
     enable = true,
@@ -651,7 +674,6 @@ local servers = {
   html = {},
   cssls = {},
   eslint = {},
-  emmet_ls = {},
   jsonls = {},
   volar = {},
   tailwindcss = {},
@@ -692,6 +714,13 @@ mason_lspconfig.setup_handlers {
 local cmp = require 'cmp'
 local luasnip = require 'luasnip'
 
+require("luasnip.loaders.from_vscode").lazy_load {
+  -- exclude = { "javascript" },
+}
+
+require'luasnip'.filetype_extend("typescript", {"javascript"})
+require'luasnip'.filetype_extend("svelte", {"typescript"})
+
 luasnip.config.setup {}
 
 cmp.setup {
@@ -708,8 +737,17 @@ cmp.setup {
     ['<C-Space>'] = cmp.mapping.complete {},
     ['<CR>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
     },
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.confirm({
+          behavior = cmp.ConfirmBehavior.Replace,
+          select = true,
+        })
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
     -- ['<Tab>'] = cmp.mapping(function(fallback)
     --   if cmp.visible() then
     --     cmp.select_next_item()
@@ -731,7 +769,7 @@ cmp.setup {
   },
   sources = {
     { name = 'nvim_lsp', max_item_count = 15 },
-    { name = 'luasnip', max_item_count = 15 },
+    { name = 'luasnip',  max_item_count = 15 },
   },
 }
 

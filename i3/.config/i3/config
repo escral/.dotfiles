@@ -51,8 +51,8 @@ exec --no-startup-id nitrogen --restore
 exec --no-startup-idc init-locale
 
 # Setup monitorsdfdsfsdf
-set $codeMonitor HDMI-0
-set $otherMonitor DVI-I-1
+set $codeMonitor DVI-I-1
+set $otherMonitor HDMI-0
 
 exec_always --no-startup-id xrandr --output $codeMonitor --auto --primary
 exec_always --no-startup-id xrandr --output $otherMonitor --auto --right-of $codeMonitor
