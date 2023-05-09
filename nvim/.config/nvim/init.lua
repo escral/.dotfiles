@@ -737,9 +737,13 @@ cmp.setup {
     ['<C-Space>'] = cmp.mapping.complete {},
     ['<CR>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
     },
     ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
+      if (require('copilot.suggestion').is_visible()) then
+        fallback()
+        -- do nothing, handled by copilot
+      elseif cmp.visible() then
         cmp.confirm({
           behavior = cmp.ConfirmBehavior.Replace,
           select = true,
