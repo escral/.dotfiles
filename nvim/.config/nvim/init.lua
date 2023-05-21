@@ -193,7 +193,8 @@ require('lazy').setup({
         sticky = true,
         padding = true,
       })
-      setKey('<C-/>', '<Plug>(comment_toggle_linewise_current)j', { noremap = false }, { 'n', 'i' })
+      setKey('<C-/>', '<Plug>(comment_toggle_linewise_current)j', {noremap = false }, { 'n' })
+      setKey('<C-/>', '<C-o><Plug>(comment_toggle_linewise_current)<C-o>j', { noremap = false }, { 'i' })
       setKey('<C-/>', '<Plug>(comment_toggle_linewise_visual)', { noremap = false }, { 'v' })
     end
   },
