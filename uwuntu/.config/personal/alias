@@ -3,8 +3,9 @@
 # General 
 alias ff='fzm'
 alias ffp='fzm | open-project-nvim'
-alias www="cd ~/www"
+alias www="cd /var/www"
 alias vim="nvim"
+alias s="kitty +kitten ssh"
 
 # PHP
 alias cda="composer dump-autoload"

@@ -193,7 +193,7 @@ require('lazy').setup({
         sticky = true,
         padding = true,
       })
-      setKey('<C-/>', '<Plug>(comment_toggle_linewise_current)j', {noremap = false }, { 'n' })
+      setKey('<C-/>', '<Plug>(comment_toggle_linewise_current)j', { noremap = false }, { 'n' })
       setKey('<C-/>', '<C-o><Plug>(comment_toggle_linewise_current)<C-o>j', { noremap = false }, { 'i' })
       setKey('<C-/>', '<Plug>(comment_toggle_linewise_visual)', { noremap = false }, { 'v' })
     end
@@ -529,10 +529,13 @@ vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
+vim.keymap.set('n', '<leader>sg', function()
+  require('telescope.builtin').live_grep()
+end, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sr', require('telescope.builtin').oldfiles, { desc = '[S]earch [R]ecent Files' })
 vim.keymap.set('n', '<C-r>', require('telescope.builtin').lsp_document_symbols, { desc = '[S]earch [S]ymbols' })
+vim.keymap.set('n', '<leader>sb', require('telescope.builtin').git_branches, { desc = '[S]earch [B]ranches' })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
@@ -673,7 +676,7 @@ local servers = {
   -- rust_analyzer = {},
   tsserver = {},
   html = {},
-  cssls = {},
+  -- cssls = {},
   eslint = {},
   jsonls = {},
   volar = {},
@@ -719,8 +722,8 @@ require("luasnip.loaders.from_vscode").lazy_load {
   -- exclude = { "javascript" },
 }
 
-require'luasnip'.filetype_extend("typescript", {"javascript"})
-require'luasnip'.filetype_extend("svelte", {"typescript"})
+require 'luasnip'.filetype_extend("typescript", { "javascript" })
+require 'luasnip'.filetype_extend("svelte", { "typescript" })
 
 luasnip.config.setup {}
 

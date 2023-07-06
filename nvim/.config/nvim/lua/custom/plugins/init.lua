@@ -261,4 +261,8 @@ return {
     {
         'jiangmiao/auto-pairs',
     },
+
+    {
+        'stephenway/postcss.vim'
+    },
 }

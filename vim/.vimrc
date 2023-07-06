@@ -66,8 +66,8 @@ set showmode
 set showcmd
 
 " Searching
-nnoremap / /\v
-vnoremap / /\v
+" nnoremap / /\v
+" vnoremap / /\v
 set hlsearch
 set incsearch
 set ignorecase
@@ -99,6 +99,8 @@ let g:hybrid_termcolors=256
 let g:hybrid_termtrans=1
 
 hi Normal ctermbg=none
+
+au BufNewFile,BufRead *.pcss set filetype=postcss
 
 " =================
 

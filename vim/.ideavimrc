@@ -17,5 +17,7 @@ sethandler <C-N> a:ide
 sethandler <C-U> a:ide
 sethandler <C-A> a:ide
 sethandler <C-K> a:ide
+sethandler <S-Down> a:ide
+sethandler <S-Up> a:ide
 
-source ~/.vim_profile
+source ~/.vimrc
