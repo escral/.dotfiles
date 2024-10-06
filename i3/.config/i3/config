@@ -54,8 +54,10 @@ exec --no-startup-idc init-locale
 set $codeMonitor DVI-I-1
 set $otherMonitor HDMI-0
 
-exec_always --no-startup-id xrandr --output $codeMonitor --auto --primary
-exec_always --no-startup-id xrandr --output $otherMonitor --auto --left-of $codeMonitor
+exec_always --no-startup-id "xrandr --output $codeMonitor --primary --auto --panning 0x0 --mode 1920x1080"
+exec_always --no-startup-id "xrandr --output $otherMonitor --auto --left-of $codeMonitor --panning 0x0 --mode 1920x1080"
+# xrandr --output DVI-I-1 --primary --auto --panning 0x0 --mode 1920x1080
+# xrandr --output HDMI-0 --auto --left-of DVI-I-1 --panning 0x0 --mode 1920x1080
 
 # Setup input
 exec --no-startup-id xset r rate 400
@@ -69,7 +71,7 @@ exec --no-startup-id nitrogen --set-zoom-fill --random ~/personal/wallpapers --h
 
 # Locales
 exec_always setxkbmap -layout us,ru -option grp:alt_shift_toggle
-bindsym Mod1+F1 exec --no-startup-id setxkbmap -layout us,ru -option grp:alt_shift_toggle
+bindsym Mod1+F1 exec --no-startup-id "setxkbmap -layout us,ru -option grp:alt_shift_toggle"
 
 # Rofi
 # Alt+Tab - Open Rofi (fzf go to window)
@@ -112,6 +114,7 @@ assign [class="^Google-chrome$"] → $wsBrowser
 assign [class="^Code$"] → $wsCode
 assign [class="^nvim$"] → $wsMainCode
 assign [class="^jetbrains-webstorm$"] → $wsMainCode
+assign [class="^jetbrains-phpstorm$"] → $wsMainCode
 assign [class="^kitty$"] → $wsTerminals
 
 workspace_auto_back_and_forth yes
@@ -309,3 +312,8 @@ bar {
 
 # Use pactl to adjust volume in PulseAudio.
 exec --no-startup-id volumeicon
+
+## Clipboard Screenshots
+bindsym Print exec --no-startup-id maim | xclip -selection clipboard -t image/png
+bindsym $mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow) | xclip -selection clipboard -t image/png
+bindsym Shift+Print exec --no-startup-id maim --select | xclip -selection clipboard -t image/png

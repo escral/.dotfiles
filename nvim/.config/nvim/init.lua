@@ -188,6 +188,11 @@ require('lazy').setup({
   -- "gc" to comment visual regions/lines
   {
     'numToStr/Comment.nvim',
+
+    {
+        'stephenway/postcss.vim',
+    },
+
     config = function()
       require('Comment').setup({
         sticky = true,
@@ -309,7 +314,7 @@ vim.keymap.set({ 'n', 'i', 'v', 't' }, '<C-z>', '<Cmd>u<CR>', { silent = true })
 vim.keymap.set({ 'n', 'i', 'v', 't' }, '<C-S-z>', '<Cmd>redo<CR>', { silent = true })
 
 -- Ctrl + S to save in all modes
-vim.keymap.set({ 'n', 'i', 'v', 't' }, '<C-s>', '<Cmd>w<CR>')
+vim.keymap.set({ 'n', 'i', 'v', 't' }, '<C-s>', '<Cmd>w<CR><Esc>')
 
 -- Ctrl + Backspace to delete previous word in insert mode
 vim.keymap.set('i', '<C-BS>', '<C-w>', { noremap = true, silent = true })
@@ -673,7 +678,14 @@ local servers = {
   -- rust_analyzer = {},
   tsserver = {},
   html = {},
-  cssls = {},
+  cssls = {
+    css = {
+    validate = true,
+      lint = {
+        unknownAtRules = "ignore"
+      }
+    }
+  },
   eslint = {},
   jsonls = {},
   volar = {},
