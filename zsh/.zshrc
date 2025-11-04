@@ -131,5 +131,5 @@ export NODE_OPTIONS="--max-old-space-size=4096"
 
 # Load local settings
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
-. "$HOME/.deno/env"
+[ -f "$HOME/.deno/env" ]  && . "$HOME/.deno/env"
 export PATH="$HOME/.local/bin:$PATH"
