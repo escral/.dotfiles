@@ -7,9 +7,15 @@ alias www="cd /var/www"
 alias vim="nvim"
 alias s="kitty +kitten ssh"
 
+# JS
+alias pn='pnpm'
+
 # PHP
 alias cda="composer dump-autoload"
 alias pa="php artisan"
+
+# Git
+alias gc='git add . && git commit -m'
 
 # Utils
 alias img="kitty +kitten icat"

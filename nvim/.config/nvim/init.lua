@@ -115,6 +115,15 @@ require('lazy').setup({
   },
 
   {
+    "williamboman/mason-lspconfig.nvim",
+    opts = {
+      ensure_installed = {
+        "eslint@4.8.0",
+      },
+    },
+  },
+
+  {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
     dependencies = {
@@ -194,7 +203,7 @@ require('lazy').setup({
     'numToStr/Comment.nvim',
 
     {
-        'stephenway/postcss.vim',
+      'stephenway/postcss.vim',
     },
 
     config = function()
@@ -386,7 +395,7 @@ vim.keymap.set({ 'n' }, '<C-Right>', 'e', { silent = true })
 vim.keymap.set({ 'n' }, '<C-Left>', 'b', { silent = true })
 
 -- Formatter
-vim.keymap.set('n', '<C-S-l>', ':silent :w<CR>:silent !npx eslint --fix %<CR>', {noremap = true})
+-- vim.keymap.set('n', '<C-S-l>', ':silent :w<CR>:silent !npx eslint --fix %<CR>', {noremap = true})
 vim.keymap.set({ 'i' }, '<C-S-l>', '<C-o>:Format<CR>', { noremap = true })
 vim.keymap.set({ 'n', 'v' }, '<C-S-l>', ':Format<CR>', { noremap = true })
 
@@ -665,8 +674,35 @@ local on_attach = function(_, bufnr)
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, '[W]orkspace [L]ist Folders')
 
+  local function eslint_attached(bufnr)
+    bufnr = bufnr or 0
+    for _, c in ipairs(vim.lsp.get_active_clients({ bufnr = bufnr })) do
+      if c.name == "eslint" then return true end
+    end
+    return false
+  end
+
+  local function eslint_fix_all(bufnr)
+    bufnr = bufnr or 0
+
+    -- 1) Try :EslintFixAll if your plugin exposes it
+    local ok = pcall(vim.cmd, "EslintFixAll")
+    if ok then return true end
+
+    -- 2) Fallback: request ESLint code action programmatically
+    if not eslint_attached(bufnr) then return false end
+    vim.lsp.buf.code_action({
+      apply = true,
+      context = { only = { "source.fixAll.eslint" }, diagnostics = {} },
+    })
+    return true
+  end
+
   -- Create a command `:Format` local to the LSP buffer
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
+    if eslint_attached(0) and eslint_fix_all(0) then
+      return
+    end
     vim.lsp.buf.format()
   end, { desc = 'Format current buffer with LSP' })
 end
@@ -685,13 +721,18 @@ local servers = {
   html = {},
   cssls = {
     css = {
-    validate = true,
+      validate = true,
       lint = {
         unknownAtRules = "ignore"
       }
     }
   },
-  eslint = {},
+  eslint = {
+    format = { enable = true },
+    lint = { enable = true },
+    workingDirectory = { mode = "auto" },
+    experimental = { useFlatConfig = true },
+  },
   jsonls = {},
   volar = {},
   tailwindcss = {},
