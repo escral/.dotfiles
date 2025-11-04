@@ -198,13 +198,13 @@ require('lazy').setup({
     },
   },
 
+  {
+    'stephenway/postcss.vim',
+  },
+
   -- "gc" to comment visual regions/lines
   {
     'numToStr/Comment.nvim',
-
-    {
-      'stephenway/postcss.vim',
-    },
 
     config = function()
       require('Comment').setup({
