@@ -102,7 +102,11 @@ hi Normal ctermbg=none
 
 au BufNewFile,BufRead *.pcss set filetype=postcss
 
-" =================
+" Map Ctrl + B to scroll down
+map <C-b> <C-d>
+noremap <C-b> <C-d>
+
+"" =================
 
 source ~/.vim_profile
 

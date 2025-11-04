@@ -87,6 +87,10 @@ require('lazy').setup({
   -- Git related plugins
   'tpope/vim-fugitive',
   'tpope/vim-rhubarb',
+  'sindrets/diffview.nvim',
+
+  -- Copilot
+  'github/copilot.vim',
 
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
@@ -377,7 +381,7 @@ vim.keymap.set({ 'n' }, '<C-Right>', 'e', { silent = true })
 vim.keymap.set({ 'n' }, '<C-Left>', 'b', { silent = true })
 
 -- Formatter
--- vim.keymap.set('n', '<C-S-l>', ':silent :w<CR>:silent !npx eslint --fix %<CR>', {noremap = true})
+vim.keymap.set('n', '<C-S-l>', ':silent :w<CR>:silent !npx eslint --fix %<CR>', {noremap = true})
 vim.keymap.set({ 'i' }, '<C-S-l>', '<C-o>:Format<CR>', { noremap = true })
 vim.keymap.set({ 'n', 'v' }, '<C-S-l>', ':Format<CR>', { noremap = true })
 

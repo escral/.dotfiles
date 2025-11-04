@@ -57,6 +57,8 @@ set $otherMonitor DP-1
 exec_always --no-startup-id xrandr --output $codeMonitor --auto --primary
 exec_always --no-startup-id xrandr --output $codeMonitor --auto --left-of $otherMonitor
 
+exec --no-startup-id i3lock --color 000000
+
 # Setup input
 exec --no-startup-id xset r rate 400
 exec_always --no-startup-id numlockx on
@@ -68,8 +70,14 @@ exec --no-startup-id setxkbmap -option caps:escape
 exec --no-startup-id nitrogen --set-zoom-fill --random ~/personal/wallpapers --head=0
 
 # Locales
-exec_always "setxkbmap -layout us,ru -option grp:alt_shift_toggle"
+exec_always --no-startup-id "setxkbmap -layout us,ru -option grp:alt_shift_toggle"
 bindsym Mod1+F1 exec --no-startup-id "setxkbmap -layout us,ru -option grp:alt_shift_toggle"
+
+# Telegram
+exec --no-startup-id telegram-desktop
+
+# Discord
+# exec --no-startup-id discord
 
 
 # Rofi
@@ -97,23 +105,30 @@ bindsym $mod+plus floating toggle
 # Other
 focus_follows_mouse no
 
+#for_window [class="electron"] floating enable
+
 # Workspaces
 # =============================================
 set $wsMainCode "1: Code"
 set $wsBrowser "2: Browser"
 set $wsTerminals "3: Terminals"
 set $wsCode "4: Code"
+set $wsCommunication "5: Communication"
 
 workspace $wsMainCode output $codeMonitor
 workspace $wsCode output $otherMonitor
 workspace $wsBrowser output $otherMonitor
 workspace $wsTerminals output $otherMonitor
+workspace $wsCommunication output $otherMonitor
 
 assign [class="^Google-chrome$"] → $wsBrowser
 assign [class="^Code$"] → $wsCode
 assign [class="^nvim$"] → $wsMainCode
 assign [class="^jetbrains-webstorm$"] → $wsMainCode
 assign [class="^kitty$"] → $wsTerminals
+assign [class="Telegram"] → $wsCommunication
+assign [class="Slack"] → $wsCommunication
+assign [class="discord"] → $wsCommunication
 
 workspace_auto_back_and_forth yes
 popup_during_fullscreen smart
@@ -191,10 +206,10 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # move focused window
-bindsym $mod+Shift+h move left
-bindsym $mod+Shift+j move down
-bindsym $mod+Shift+k move up
-bindsym $mod+Shift+l move right
+# bindsym $mod+Shift+h move left
+# bindsym $mod+Shift+j move down
+# bindsym $mod+Shift+k move up
+# bindsym $mod+Shift+l move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -230,7 +245,7 @@ bindsym $mod+1 workspace $wsMainCode
 bindsym $mod+2 workspace $wsBrowser
 bindsym $mod+3 workspace $wsTerminals
 bindsym $mod+4 workspace $wsCode
-bindsym $mod+5 workspace 5
+bindsym $mod+5 workspace $wsCommunication
 bindsym $mod+6 workspace 6
 bindsym $mod+7 workspace 7
 bindsym $mod+8 workspace 8
@@ -325,3 +340,6 @@ bindsym XF86AudioMute exec "amixer -q sset Master,0 toggle"
 bindsym Shift+Print exec --no-startup-id maim | xclip -selection clipboard -t image/png
 bindsym $mod+Print exec --no-startup-id maim --window $(xdotool getactivewindow) | xclip -selection clipboard -t image/png
 bindsym Print exec --no-startup-id maim --select | xclip -selection clipboard -t image/png
+
+# i3lock binding
+bindsym $mod+Shift+l exec i3lock --color 000000

@@ -1,6 +1,6 @@
 sethandler <C-P> a:ide
 sethandler <C-E> a:ide
-sethandler <C-B> a:ide
+" sethandler <C-B> a:ide
 sethandler <C-C> a:ide
 sethandler <C-V> a:ide
 sethandler <C-X> a:ide
