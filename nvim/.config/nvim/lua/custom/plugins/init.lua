@@ -250,7 +250,7 @@ return {
         'sindrets/diffview.nvim',
         requires = 'nvim-lua/plenary.nvim',
     },
-
+    
     {
         'evanleck/vim-svelte',
         config = function()
@@ -260,6 +260,9 @@ return {
     
     {
         'jiangmiao/auto-pairs',
+        config = function() 
+            vim.g.AutoPairsMultilineClose = 0
+        end,
     },
 
     {

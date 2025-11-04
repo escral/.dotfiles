@@ -192,6 +192,11 @@ require('lazy').setup({
   -- "gc" to comment visual regions/lines
   {
     'numToStr/Comment.nvim',
+
+    {
+        'stephenway/postcss.vim',
+    },
+
     config = function()
       require('Comment').setup({
         sticky = true,
@@ -313,7 +318,7 @@ vim.keymap.set({ 'n', 'i', 'v', 't' }, '<C-z>', '<Cmd>u<CR>', { silent = true })
 vim.keymap.set({ 'n', 'i', 'v', 't' }, '<C-S-z>', '<Cmd>redo<CR>', { silent = true })
 
 -- Ctrl + S to save in all modes
-vim.keymap.set({ 'n', 'i', 'v', 't' }, '<C-s>', '<Cmd>w<CR>')
+vim.keymap.set({ 'n', 'i', 'v', 't' }, '<C-s>', '<Cmd>w<CR><Esc>')
 
 -- Ctrl + Backspace to delete previous word in insert mode
 vim.keymap.set('i', '<C-BS>', '<C-w>', { noremap = true, silent = true })
@@ -533,9 +538,7 @@ vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>sg', function()
-  require('telescope.builtin').live_grep()
-end, { desc = '[S]earch by [G]rep' })
+vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sr', require('telescope.builtin').oldfiles, { desc = '[S]earch [R]ecent Files' })
 vim.keymap.set('n', '<C-r>', require('telescope.builtin').lsp_document_symbols, { desc = '[S]earch [S]ymbols' })
@@ -680,7 +683,14 @@ local servers = {
   -- rust_analyzer = {},
   tsserver = {},
   html = {},
-  -- cssls = {},
+  cssls = {
+    css = {
+    validate = true,
+      lint = {
+        unknownAtRules = "ignore"
+      }
+    }
+  },
   eslint = {},
   jsonls = {},
   volar = {},

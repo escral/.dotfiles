@@ -125,6 +125,7 @@ assign [class="^Google-chrome$"] → $wsBrowser
 assign [class="^Code$"] → $wsCode
 assign [class="^nvim$"] → $wsMainCode
 assign [class="^jetbrains-webstorm$"] → $wsMainCode
+assign [class="^jetbrains-phpstorm$"] → $wsMainCode
 assign [class="^kitty$"] → $wsTerminals
 assign [class="Telegram"] → $wsCommunication
 assign [class="Slack"] → $wsCommunication
@@ -277,7 +278,7 @@ mode "resize" {
 
         # Pressing left will shrink the window’s width.
         # Pressing right will grow the window’s width.
-        # Pressing up will shring the window’s height.
+        # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
         bindsym h resize shrink width 10 px or 10 ppt
         bindsym j resize grow height 10 px or 10 ppt
