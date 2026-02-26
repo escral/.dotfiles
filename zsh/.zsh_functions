@@ -1,0 +1,36 @@
+export STOW_FOLDERS="autorandr,bin,kitty,i3,zsh,fonts,rofi,fonts,fzf,vim,nvim,git"
+
+increaseWatchers() {
+    sudo sysctl fs.inotify.max_user_watches=65536
+    sudo sysctl -p
+}
+
+die() {
+    echo >&2 "$@"
+    exit 1
+}
+
+addToPath() {
+    if [[ "$PATH" != *"$1"* ]]; then
+        export PATH=$PATH:$1
+    fi
+}
+
+addToPathFront() {
+    if [[ "$PATH" != *"$1"* ]]; then
+        export PATH=$1:$PATH
+    fi
+}
+
+commitDotFiles() {
+    pushd $DOTFILES
+    pushd personal
+    git add .
+    git commit -m "auto: Some changes in environment"
+    git push origin master
+    popd
+    git add .
+    git commit -m "auto: Some changes in environment"
+    git push origin master
+    popd
+}

@@ -1,0 +1,14 @@
+#!/usr/bin/env zsh
+
+sudo apt update
+sudo apt install libfuse2 -y
+
+curl -o /tmp/jetbrains-toolbox.tar.gz "https://download-cdn.jetbrains.com/toolbox/jetbrains-toolbox-1.27.3.14493.tar.gz"
+
+tar -xvzf /tmp/jetbrains-toolbox.tar.gz
+
+mv /tmp/jetbrains-toolbox-1.27.3.14493 ~/jetbrains
+
+rm -f /tmp/jetbrains-toolbox.tar.gz
+
+sudo ln -s ~/jetbrains/jetbrains-toolbox /usr/bin/jetbrains-toolbox

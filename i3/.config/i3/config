@@ -1,0 +1,18 @@
+# i3 config file (v4)
+# https://i3wm.org/docs/userguide.html
+
+set $mod Mod4
+
+# ── Monitors ──────────────────────────────────────────────────────────────────
+# Fallback defaults — overridden by monitors.conf when setup-monitors runs
+set $codeMonitor  DP-2
+set $otherMonitor DP-1
+include ~/.config/i3/monitors.conf
+
+# ── Includes ──────────────────────────────────────────────────────────────────
+include ~/.config/i3/theme.conf
+include ~/.config/i3/workspaces.conf
+include ~/.config/i3/windows.conf
+include ~/.config/i3/keybindings.conf
+include ~/.config/i3/bar.conf
+include ~/.config/i3/startup.conf

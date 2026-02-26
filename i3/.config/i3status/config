@@ -1,0 +1,71 @@
+# It is important that this file is edited as UTF-8.
+# The following line should contain a sharp s:
+# ß
+# If the above line is not correctly displayed, fix your editor first!
+
+# It is also important that you have Nerd Font installed.
+# The following line should contain a logo of Github:
+# 
+# If the above line is not correctly displayed, install Nerd Font first!
+
+general {
+    colors = true
+    interval = 5
+    color_good = "#a6d189"
+    color_bad = "#e78284"
+    color_degraded = "#ef9f76"
+    output_format = i3bar
+    markup = "pango"
+}
+
+order += "disk /"
+order += "cpu_usage"
+order += "memory"
+order += "wireless _first_"
+order += "volume master"
+order += "tztime local"
+order += "time"
+
+# This is just for display the String "AimerNeige" you can delete it or change it to your own name
+disk "/" {
+    format = "<span font_family='Font Awesome 6 Pro' foreground='#a6d189'></span> %avail"
+}
+
+cpu_usage {
+    max_threshold = 75
+    degraded_threshold = 90
+
+    format = "<span font_family='Font Awesome 6 Pro' font_weight='400' foreground='#a6d189'></span> %usage"
+    format_above_threshold = "<span font_family='Font Awesome 6 Pro'></span> %usage"
+    format_above_degraded_threshold = "<span font_family='Font Awesome 6 Pro'></span> %usage"
+}
+
+memory {
+    threshold_degraded = 15%
+    threshold_critical = 5%
+
+    format = "<span font_family='Font Awesome 6 Pro' foreground='#a6d189'></span> %used"
+    format_degraded = "<span font_family='Font Awesome 6 Pro'></span> %used"
+}
+
+wireless _first_ {
+        format_up = "<span font_family='Font Awesome 6 Pro' foreground='#a6d189'></span> <span foreground='#c6d0f5'>%quality</span>"
+        format_down = "<span font_family='Font Awesome 6 Pro'></span>"
+}
+
+volume master {
+    format = "<span font_family='Font Awesome 6 Pro' foreground='#a6d189'></span> %volume"
+    format_muted = "<span font_family='Font Awesome 6 Pro' foreground='#e78284'></span>"
+    device = "default"
+    mixer = "Master"
+    mixer_idx = 0
+}
+
+tztime local {
+    format = "%A %d.%m.%Y"
+    # locale = ru_RU.UTF-8
+}
+
+time {
+    format = "%H:%M "
+}

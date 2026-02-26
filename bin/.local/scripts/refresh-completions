@@ -1,0 +1,4 @@
+#!/usr/bin/env zsh
+
+rm -f ~/.zcompdump-fast
+exec zsh

@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+MONITORS_CONF="$HOME/.config/i3/monitors.conf"
+
+# Parse xrandr: find connected monitors that have an active resolution,
+# extract their X offset, sort left-to-right
+readarray -t MONITORS < <(
+    xrandr | awk '
+        /^[A-Za-z0-9-]+ connected/ && / [0-9]+x[0-9]+\+[0-9]+\+[0-9]+/ {
+            for (i = 1; i <= NF; i++) {
+                if ($i ~ /^[0-9]+x[0-9]+\+[0-9]+\+[0-9]+$/) {
+                    split($i, parts, "+")
+                    print parts[2], $1
+                    break
+                }
+            }
+        }
+    ' | sort -n | awk '{print $2}'
+)
+
+[ ${#MONITORS[@]} -eq 0 ] && exit 0
+
+CODE_MONITOR="${MONITORS[0]}"                   # leftmost
+OTHER_MONITOR="${MONITORS[${#MONITORS[@]}-1]}"  # rightmost (same as left on single monitor)
+
+NEW_CONTENT="set \$codeMonitor $CODE_MONITOR
+set \$otherMonitor $OTHER_MONITOR"
+
+CURRENT_CONTENT=""
+[ -f "$MONITORS_CONF" ] && CURRENT_CONTENT="$(cat "$MONITORS_CONF")"
+
+if [ "$NEW_CONTENT" != "$CURRENT_CONTENT" ]; then
+    # Remove stow symlink if present so we write a real machine-local file
+    [ -L "$MONITORS_CONF" ] && rm "$MONITORS_CONF"
+    echo "$NEW_CONTENT" > "$MONITORS_CONF"
+
+    # Restart i3 if it's already running to pick up the new assignments
+    if i3-msg -t get_version &>/dev/null 2>&1; then
+        i3-msg restart
+    fi
+fi

@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+# change directory to $DOTFILES
+pushd "$DOTFILES"
+
+# loop through the list of folders
+for folder in $(echo "$STOW_FOLDERS" | sed "s/,/ /g")
+do
+    # print the folder name
+    echo "Removing $folder"
+
+    # unstow the folder
+    stow -D "$folder"
+done
+
+# change back to the previous directory
+popd

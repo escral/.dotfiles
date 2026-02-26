@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+source ~/.zshrc
+
+dir=$(fzm)
+
+open-project-nvim $dir

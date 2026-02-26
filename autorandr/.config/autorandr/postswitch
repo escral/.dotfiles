@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# Runs after every autorandr profile switch.
+# Detects left/right monitor positions and updates i3 workspace assignments.
+setup-monitors
