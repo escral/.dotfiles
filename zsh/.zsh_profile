@@ -18,7 +18,6 @@ ZSH_THEME="robbyrussell"
 export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 
 plugins=(
-    git
     yarn
     npm
     zsh-autosuggestions
