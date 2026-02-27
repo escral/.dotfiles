@@ -1,0 +1,9 @@
+#!/bin/sh
+# Sourced by display manager at X session start (before window manager).
+# Sets a stable PATH for GUI apps (WebStorm, Toolbox, etc.).
+# Uses fnm's default alias directly — avoids ephemeral multishells paths.
+
+FNM_DIR="$HOME/.local/share/fnm"
+if [ -d "$FNM_DIR" ]; then
+    export PATH="$FNM_DIR/aliases/default/bin:$FNM_DIR:$PATH"
+fi

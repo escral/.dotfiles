@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 if [[ -z $STOW_FOLDERS ]]; then
-    STOW_FOLDERS="bin,autorandr,kitty,i3,zsh"
+    export STOW_FOLDERS="autorandr,bin,kitty,i3,zsh,fonts,rofi,fonts,fzf,vim,nvim,git"
 fi
 
 if [[ -z $DOTFILES ]]; then
