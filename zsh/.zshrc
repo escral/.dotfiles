@@ -1,3 +1,6 @@
+# Profiler: run with ZSH_PROFILE=1 zsh to see timing report
+[[ -n "$ZSH_PROFILE" ]] && zmodload zsh/zprof
+
 source ~/.zsh_profile
 source ~/.zsh_aliases
 source ~/.zsh_functions
@@ -32,3 +35,5 @@ if [ -d "$FNM_PATH" ]; then
   export PATH="$FNM_PATH:$PATH"
   eval "`fnm env`"
 fi
+
+[[ -n "$ZSH_PROFILE" ]] && zprof

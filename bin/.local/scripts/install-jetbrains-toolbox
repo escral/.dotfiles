@@ -1,14 +1,50 @@
 #!/usr/bin/env zsh
+set -euo pipefail
 
-sudo apt update
-sudo apt install libfuse2 -y
+INSTALL_DIR="${HOME}/.local/share/JetBrains/Toolbox"
+BIN_DIR="${HOME}/.local/bin"
 
-curl -o /tmp/jetbrains-toolbox.tar.gz "https://download-cdn.jetbrains.com/toolbox/jetbrains-toolbox-1.27.3.14493.tar.gz"
+_step() { print -P "%F{blue}==>%f $*" }
+_ok()   { print -P "%F{green} ✓%f $*" }
+_err()  { print -P "%F{red}Error:%f $*" >&2; exit 1 }
 
-tar -xvzf /tmp/jetbrains-toolbox.tar.gz
+# Install libfuse2 if missing (required by AppImage-based Toolbox)
+if ! dpkg -l libfuse2 &>/dev/null 2>&1; then
+  _step "Installing libfuse2..."
+  sudo apt-get update -qq
+  sudo apt-get install -y libfuse2
+fi
 
-mv /tmp/jetbrains-toolbox-1.27.3.14493 ~/jetbrains
+# Resolve latest download URL from JetBrains API
+_step "Fetching latest JetBrains Toolbox release..."
+DOWNLOAD_URL=$(
+  curl -fsSL "https://data.services.jetbrains.com/products/releases?code=TBA&latest=true&type=release" \
+  | python3 -c "import sys, json; print(json.load(sys.stdin)['TBA'][0]['downloads']['linux']['link'])"
+) || _err "Failed to resolve download URL"
 
-rm -f /tmp/jetbrains-toolbox.tar.gz
+_ok "Found: ${DOWNLOAD_URL:t}"
 
-sudo ln -s ~/jetbrains/jetbrains-toolbox /usr/bin/jetbrains-toolbox
+# Download into a temp dir that is cleaned up on exit
+TMPDIR=$(mktemp -d)
+trap "rm -rf -- '${TMPDIR}'" EXIT
+
+_step "Downloading..."
+curl -fL --progress-bar -o "${TMPDIR}/toolbox.tar.gz" "${DOWNLOAD_URL}"
+
+_step "Extracting..."
+tar -xzf "${TMPDIR}/toolbox.tar.gz" -C "${TMPDIR}"
+
+EXTRACTED=$(find "${TMPDIR}" -maxdepth 1 -name 'jetbrains-toolbox-*' -type d | head -1)
+[[ -d "${EXTRACTED}" ]] || _err "Could not find extracted directory"
+
+_step "Installing to ${INSTALL_DIR}..."
+mkdir -p "${INSTALL_DIR}"
+cp -r "${EXTRACTED}/." "${INSTALL_DIR}/"
+
+mkdir -p "${BIN_DIR}"
+ln -sf "${INSTALL_DIR}/bin/jetbrains-toolbox" "${BIN_DIR}/jetbrains-toolbox"
+
+_ok "Installed to ${INSTALL_DIR}"
+_ok "Symlinked to ${BIN_DIR}/jetbrains-toolbox"
+_ok "Run: jetbrains-toolbox"
+_ok "Desktop entry will be created automatically on first launch"
