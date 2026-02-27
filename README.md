@@ -37,3 +37,6 @@
   - FiraCode
 - **vim**
   - .ideavimrc - IDE bindings preserved
+
+## TODO
+- [ ] .zshrc is not stowed automatically because of confilict with real file. Remove default one after zsh install
