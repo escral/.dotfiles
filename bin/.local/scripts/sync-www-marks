@@ -1,0 +1,32 @@
+#!/usr/bin/env zsh
+
+MARKS_FILE="${FZF_MARKS_FILE:-$HOME/.fzf-marks}"
+WWW_ROOT="/var/www"
+SCAN_DIRS=(
+  $WWW_ROOT
+  $WWW_ROOT/tmg
+)
+
+added=0
+
+for base in $SCAN_DIRS; do
+  [[ -d $base ]] || continue
+
+  for dir in $base/*(N/); do
+    # Derive label from path relative to WWW_ROOT (e.g. tmg/foo, or just foo)
+    label="${dir#$WWW_ROOT/}"
+
+    # Skip if an entry with this exact path already exists
+    if grep -qF " : $dir" "$MARKS_FILE" 2>/dev/null; then
+      continue
+    fi
+
+    echo "$label : $dir" >> "$MARKS_FILE"
+    (( added++ ))
+  done
+done
+
+# Ensure the file ends with a blank line
+[[ -s $MARKS_FILE ]] && [[ $(tail -c1 "$MARKS_FILE" | wc -l) -eq 0 ]] && echo >> "$MARKS_FILE"
+
+echo "sync-www-marks: added $added new mark(s) to $MARKS_FILE"
