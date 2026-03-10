@@ -1,0 +1,124 @@
+[global]
+    ### Display ###
+    monitor = 0
+    follow = none
+
+    ### Geometry ###
+    # Width of notification. Can be a fixed value or a range (min, max).
+    width = (300, 480)
+    # Height of a single notification.
+    height = 200
+    # Position: bottom-right corner
+    origin = bottom-right
+    # Offset from the corner (horizontal x vertical)
+    offset = 16x46
+    # Scale factor (0 = auto-detect HiDPI)
+    scale = 0
+
+    # Maximum number of notification (0 means no limit)
+    notification_limit = 5
+
+    ### Progress bar ###
+    progress_bar = true
+    progress_bar_height = 6
+    progress_bar_frame_width = 1
+    progress_bar_min_width = 150
+    progress_bar_max_width = 400
+    progress_bar_corner_radius = 3
+
+    ### Visuals ###
+    transparency = 0
+    separator_height = 2
+    padding = 12
+    horizontal_padding = 14
+    text_icon_padding = 10
+    frame_width = 2
+    # Corner radius for notifications
+    corner_radius = 8
+    separator_color = frame
+
+    # Sort by urgency
+    sort = yes
+
+    ### Text ###
+    font = FiraCode Nerd Font 11
+    line_height = 0
+    markup = full
+    # %a - appname, %s - summary, %b - body, %i - iconname, %n - progress, %p - progress percent
+    format = "<b>%a</b>\n%s\n%b"
+    alignment = left
+    vertical_alignment = center
+    show_age_threshold = 60
+    ellipsize = middle
+    ignore_newline = no
+    stack_duplicates = true
+    hide_duplicate_count = false
+    show_indicators = yes
+
+    ### Icons ###
+    enable_recursive_icon_lookup = true
+    icon_theme = hicolor
+    icon_position = left
+    min_icon_size = 32
+    max_icon_size = 48
+
+    ### History ###
+    sticky_history = yes
+    history_length = 20
+
+    ### Misc/Advanced ###
+    dmenu = /usr/bin/rofi -dmenu -p dunst
+    browser = /usr/bin/xdg-open
+    always_run_script = true
+    title = Dunst
+    class = Dunst
+    ignore_dbusclose = false
+
+    ### Wayland ###
+    force_xwayland = false
+
+    ### Legacy ###
+    force_xinerama = false
+
+    ### Mouse actions ###
+    mouse_left_click = close_current
+    mouse_middle_click = do_action, close_current
+    mouse_right_click = close_all
+
+[experimental]
+    per_monitor_dpi = false
+
+# ── Urgency: Low ─────────────────────────────────────────────────────────────
+# Catppuccin Latte — white background, blue border
+[urgency_low]
+    background = "#eff1f5"
+    foreground = "#4c4f69"
+    frame_color = "#1e66f5"
+    timeout = 5
+    icon = dialog-information
+
+# ── Urgency: Normal ───────────────────────────────────────────────────────────
+# Catppuccin Latte — white background, mauve border
+[urgency_normal]
+    background = "#eff1f5"
+    foreground = "#4c4f69"
+    frame_color = "#8839ef"
+    timeout = 8
+    icon = dialog-information
+
+# ── Urgency: Critical ────────────────────────────────────────────────────────
+# Catppuccin Latte — white background, red border, no timeout
+[urgency_critical]
+    background = "#eff1f5"
+    foreground = "#4c4f69"
+    frame_color = "#d20f39"
+    timeout = 0
+    icon = dialog-error
+
+# ── App rule: Slack ───────────────────────────────────────────────────────────
+# Slack notifications never auto-dismiss
+[slack]
+    appname = Slack
+    timeout = 0
+    frame_color = "#fe640b"
+    icon = slack
