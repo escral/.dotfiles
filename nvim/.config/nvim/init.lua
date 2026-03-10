@@ -699,7 +699,7 @@ local servers = {
     experimental = { useFlatConfig = true },
   },
   jsonls = {},
-  volar = {},
+  vue_ls = {},
   tailwindcss = {},
 
   lua_ls = {
