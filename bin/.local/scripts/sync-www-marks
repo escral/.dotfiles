@@ -5,6 +5,7 @@ WWW_ROOT="/var/www"
 SCAN_DIRS=(
   $WWW_ROOT
   $WWW_ROOT/tmg
+  $WWW_ROOT/c2b
 )
 
 added=0
