@@ -1,7 +1,7 @@
 [global]
     ### Display ###
     monitor = 1
-    follow = none
+    follow = keyboard
 
     ### Geometry ###
     # Width of notification. Can be a fixed value or a range (min, max).
@@ -57,9 +57,9 @@
 
     ### Icons ###
     enable_recursive_icon_lookup = true
-    icon_theme = hicolor
+    icon_theme = Papirus
     icon_position = left
-    min_icon_size = 32
+    min_icon_size = 48
     max_icon_size = 48
 
     ### History ###
@@ -118,7 +118,7 @@
 # ── App rule: Slack ───────────────────────────────────────────────────────────
 # Slack notifications never auto-dismiss
 [slack]
-    appname = Slack
-    timeout = 0
+    desktop_entry = slack_Slack
+    override_dbus_timeout = 0
+    new_icon = slack
     frame_color = "#fe640b"
-    icon = slack
