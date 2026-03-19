@@ -81,8 +81,8 @@
     force_xinerama = false
 
     ### Mouse actions ###
-    mouse_left_click = close_current
-    mouse_middle_click = do_action, close_current
+    mouse_left_click = do_action, close_current
+    mouse_middle_click = close_current
     mouse_right_click = close_all
 
 [experimental]
@@ -115,15 +115,22 @@
     timeout = 0
     icon = dialog-error
 
+# ── App rule: Slack Custom (chat is NOT opened on click) ─────────────────────
+#[slack]
+#    desktop_entry = slack_Slack
+#    skip_display = yes
+#    script = ~/.config/dunst/slack-clean.sh
+#
+#[slack-clean-style]
+#    appname = SlackClean
+#    new_icon = slack
+#    frame_color = "#fe640b"
+#    format = "<b>%s</b>\n%b"
+#    timeout = 0
+
 # ── App rule: Slack ───────────────────────────────────────────────────────────
-# Slack notifications never auto-dismiss
 [slack]
     desktop_entry = slack_Slack
-    skip_display = yes
-    script = ~/.config/dunst/slack-clean.sh
-
-[slack-clean-style]
-    appname = SlackClean
     new_icon = slack
     frame_color = "#fe640b"
     format = "<b>%s</b>\n%b"

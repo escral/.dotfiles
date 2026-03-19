@@ -1,8 +1,11 @@
-#!/usr/bin/env bash
-
 author=$(printf '%s' "$DUNST_SUMMARY" | sed 's/^New message from //')
 
-dunstify \
+action=$(dunstify \
   -a SlackClean \
+  -A "open,Open Slack" \
   "$author" \
-  "$DUNST_BODY"
+  "$DUNST_BODY")
+
+if [ "$action" = "open" ]; then
+  i3-msg '[class="Slack"] focus' >/dev/null || slack >/dev/null 2>&1 &
+fi
