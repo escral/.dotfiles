@@ -1,0 +1,10 @@
+{
+  "lastChangelogVersion": "0.65.0",
+  "theme": "dark",
+  "packages": [],
+  "defaultProvider": "github-copilot",
+  "defaultModel": "claude-sonnet-4.6",
+  "defaultThinkingLevel": "off",
+  "hideThinkingBlock": false,
+  "collapseChangelog": false
+}

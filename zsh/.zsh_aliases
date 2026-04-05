@@ -25,3 +25,6 @@ alias copy="kitty +kitten clipboard"
 alias my_ip="ip address | grep -o \"inet 192.*/\" | awk '{ print \$2 }' | tr / ' ' | xargs"
 
 alias dotFileInstall="$DOTFILES/install"
+
+# Coding Agent
+alias pi='VISUAL="$HOME/.local/bin/pi-nvim-editor" EDITOR="$HOME/.local/bin/pi-nvim-editor" command pi'
