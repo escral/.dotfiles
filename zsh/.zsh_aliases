@@ -20,6 +20,9 @@ alias save='git add -A && git diff --cached --quiet || (printf "Commit message: 
 alias img="kitty +kitten icat"
 alias copy="kitty +kitten clipboard"
 
+# Docker
+alias dcrm='docker ps -aq | xargs -r docker rm -f'
+
 # Other
 # shellcheck disable=SC2142
 alias my_ip="ip address | grep -o \"inet 192.*/\" | awk '{ print \$2 }' | tr / ' ' | xargs"
