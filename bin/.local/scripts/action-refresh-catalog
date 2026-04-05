@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Resolve symlinks so this works whether called from ~/.local/scripts or directly
+SCRIPTS_DIR="$(cd "$(dirname "$0")" && pwd -P)"
+ACTION_HUB_DIR="$SCRIPTS_DIR/../action-hub"
+
+exec bun run --cwd "$ACTION_HUB_DIR" parse-actions

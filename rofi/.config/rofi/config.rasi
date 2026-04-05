@@ -2,4 +2,4 @@ configuration {
     show-icons: true;
 }
 
-@theme "/home/alexander/.local/share/rofi/themes/catppuccin-frappe-customized.rasi"
+@theme "catppuccin-frappe-customized"

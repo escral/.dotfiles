@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CACHE_DIR="$HOME/.cache/action-hub"
+ACTIONS_JSON="$CACHE_DIR/actions.json"
+ROFI_LINES="$CACHE_DIR/rofi-lines.txt"
+
+# Build catalog on first run or if cache is missing
+if [[ ! -f "$ROFI_LINES" || ! -f "$ACTIONS_JSON" ]]; then
+  action-refresh-catalog
+fi
+
+# Show rofi; -format i returns the 0-based line index of the selection
+chosen_idx=$(rofi -dmenu -p "Actions" -i -format i -markup-rows -columns 1 < "$ROFI_LINES") || exit 0
+[[ -z "$chosen_idx" ]] && exit 0
+
+# Resolve exec by index
+exec_cmd=$(jq -r ".[$chosen_idx].exec" "$ACTIONS_JSON")
+[[ -z "$exec_cmd" || "$exec_cmd" == "null" ]] && exit 1
+
+exec sh -c "$exec_cmd"
