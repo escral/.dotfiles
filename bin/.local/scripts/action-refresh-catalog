@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# @action group:scripts title:Refresh action catalog
 set -euo pipefail
 
 # Resolve symlinks so this works whether called from ~/.local/scripts or directly

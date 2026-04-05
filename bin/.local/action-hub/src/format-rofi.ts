@@ -51,7 +51,7 @@ export function formatForRofi(actions: Action[]): string[] {
     const title = escapeMarkup(a.title.padEnd(40));
 
     return keyMarkup
-      ? `${groupMarkup} ${title} ${keyMarkup}`
-      : `${groupMarkup} ${title}`;
+      ? `${groupMarkup}  ${title}  ${keyMarkup}`
+      : `${groupMarkup}  ${title}`;
   });
 }

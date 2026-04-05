@@ -5,6 +5,7 @@ import { homedir } from "os";
 import { I3Driver } from "./drivers/i3";
 import { KittyDriver } from "./drivers/kitty";
 import { PlainJsonDriver } from "./drivers/plain-json";
+import { ScriptsDriver } from "./drivers/scripts";
 import { merge, validate } from "./merge";
 import { formatForRofi } from "./format-rofi";
 
@@ -15,6 +16,7 @@ async function main() {
     new I3Driver(process.env.I3_CONFIG),
     new KittyDriver(process.env.KITTY_CONFIG),
     new PlainJsonDriver(process.env.ACTION_HUB_JSON_DIR),
+    new ScriptsDriver(process.env.ACTION_HUB_SCRIPTS_DIR),
   ];
 
   const lists = await Promise.all(drivers.map((d) => d.extract()));

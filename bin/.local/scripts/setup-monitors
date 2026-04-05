@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# @action group:scripts title:Detect monitors and update i3 monitors.conf
 
 MONITORS_CONF="$HOME/.config/i3/monitors.conf"
 

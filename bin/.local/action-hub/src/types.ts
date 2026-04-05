@@ -1,4 +1,4 @@
-export type ActionSource = "i3" | "kitty" | "json";
+export type ActionSource = "i3" | "kitty" | "json" | "scripts";
 
 export interface Action {
   id: number;

@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# @action group:scripts exec:i3-sensible-terminal -e zsh $HOME/.local/scripts/open-project-nvim-fzm title:Pick project and open in Neovim (fzm)
 
 source ~/.zshrc
 

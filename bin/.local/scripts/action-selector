@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# @action group:scripts title:Open action launcher
 set -euo pipefail
 
 CACHE_DIR="$HOME/.cache/action-hub"

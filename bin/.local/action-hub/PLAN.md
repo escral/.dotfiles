@@ -34,7 +34,8 @@ Fields:
 
 - **i3** — reads `~/.config/i3/config`, follows `include` directives recursively, resolves `set $var` substitutions, extracts annotated `bindsym`/`bindcode` lines.
 - **Kitty** — reads `kitty.conf`, extracts annotated `map` lines. Kitty bindings run inside the terminal; the `exec` field may need a `kitty @` remote-control command for actions triggered from outside.
-- **Plain JSON** — globs `~/.config/action-hub/actions.d/*.json` for custom actions with no binding (e.g. scripts, one-off commands). Same schema, no `keys` field required.
+- **Plain JSON** — globs `~/.config/action-hub/actions.d/*.json` for custom actions with no binding (e.g. one-off commands). Same schema, no `keys` field required.
+- **Scripts** — scans `~/.local/scripts` (override with `ACTION_HUB_SCRIPTS_DIR`); files with a `# @action` line in the first ~80 lines are included. If `exec:` is omitted, the command is derived from the shebang (`bash` / `zsh` / `sh` + `$HOME/.local/scripts/<name>`).
 
 ## Pipeline
 

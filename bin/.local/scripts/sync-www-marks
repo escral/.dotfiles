@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# @action group:scripts title:Sync /var/www dirs into fzf-marks
 
 MARKS_FILE="${FZF_MARKS_FILE:-$HOME/.fzf-marks}"
 WWW_ROOT="/var/www"
