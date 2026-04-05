@@ -11,7 +11,8 @@ if [[ ! -f "$ROFI_LINES" || ! -f "$ACTIONS_JSON" ]]; then
 fi
 
 # Show rofi; -format i returns the 0-based line index of the selection
-chosen_idx=$(rofi -dmenu -p "Actions" -i -format i -markup-rows -columns 1 < "$ROFI_LINES") || exit 0
+chosen_idx=$(rofi -dmenu -p "Actions" -i -format i -markup-rows -columns 1 \
+  -theme-str 'window {width:40%;}' < "$ROFI_LINES") || exit 0
 [[ -z "$chosen_idx" ]] && exit 0
 
 # Resolve exec by index
