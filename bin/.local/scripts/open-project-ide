@@ -52,7 +52,7 @@ done < "$MARKS_FILE"
 
 [[ ${#display_lines[@]} -eq 0 ]] && exit 0
 
-chosen_idx=$(printf '%s\n' "${display_lines[@]}" | rofi -dmenu -p " Project" -i \
+chosen_idx=$(printf '%s\n' "${display_lines[@]}" | rofi -dmenu -p "Project" -i \
     -format i -markup-rows -matching fuzzy -sort \
     -theme-str 'window {width:50%;}') || exit 0
 
