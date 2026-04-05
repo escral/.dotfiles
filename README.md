@@ -38,6 +38,18 @@
 - **vim**
   - .ideavimrc - IDE bindings preserved
 
+## Hotkeys
+
+- `Super + Enter` - Open terminal
+- `Super + D` - Open application launcher
+- `Super + Enter` - Open terminal
+- `Super + Shift + P` - Open action menu
+- `Super + P` - Open project launcher
+- `Super + Shift + Q` - Close focused window
+- `Super + Shift + R` - Reload i3 configuration
+
 ## TODO
 - [ ] .zshrc is not stowed automatically because of confilict with real file. Remove default one after zsh install
 - [ ] Automatically create /var/www folder
+- [ ] Open terminal with working directory of focused window
+- [ ] Kitty hotkeys rofi window
