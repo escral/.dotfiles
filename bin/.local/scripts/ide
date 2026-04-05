@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# @action group:scripts exec:i3-sensible-terminal -e zsh $HOME/.local/scripts/ide title:Open directory in appropriate IDE
+
+dir="${1:-.}"
+dir=$(realpath "$dir")
+
+if [[ ! -d "$dir" ]]; then
+    echo "ide: not a directory: $dir" >&2
+    exit 1
+fi
+
+if [[ -f "$dir/composer.json" ]]; then
+    phpstorm "$dir" &
+elif [[ -f "$dir/package.json" ]]; then
+    webstorm "$dir" &
+else
+    i3-sensible-terminal --class nvim -e "$HOME/.local/scripts/open-project-nvim" "$dir" &
+fi
