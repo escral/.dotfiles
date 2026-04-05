@@ -29,7 +29,7 @@ function formatKeyMarkup(key: string): string {
     .map((m) => escapeMarkup(MOD_NAMES[m] ?? m));
   const mainKey = escapeMarkup(parts[parts.length - 1]);
 
-  return `<span foreground="#aaaaaa">${mods.join("+")}</span>+${mainKey}`;
+  return `<span foreground="#949cbb">${mods.join("+")}</span>+${mainKey}`;
 }
 
 /**
@@ -46,11 +46,12 @@ export function formatForRofi(actions: Action[]): string[] {
   const maxGroup = Math.max(...actions.map((a) => a.group.length));
 
   return actions.map((a) => {
-    const groupMarkup = `<span foreground="#666666">${escapeMarkup(a.group.padEnd(maxGroup))}</span>`;
+    const groupMarkup = `<span foreground="#949cbb">${escapeMarkup(a.group.padEnd(maxGroup))}</span>`;
     const keyMarkup = a.keys?.map(formatKeyMarkup).join(", ") ?? "";
+    const title = escapeMarkup(a.title.padEnd(40));
 
     return keyMarkup
-      ? `${groupMarkup} ${escapeMarkup(a.title)}  ${keyMarkup}`
-      : `${groupMarkup} ${escapeMarkup(a.title)}`;
+      ? `${groupMarkup} ${title}  ${keyMarkup}`
+      : `${groupMarkup} ${title}`;
   });
 }
