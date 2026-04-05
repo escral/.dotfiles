@@ -9,6 +9,40 @@ if [[ ! -d "$dir" ]]; then
     exit 1
 fi
 
+# Optional: IDE_OVERRIDES=/path/to/file to use a different overrides file.
+override_file="${IDE_OVERRIDES:-$HOME/.config/ide/overrides}"
+
+ide_from_overrides() {
+    [[ -f "$override_file" ]] || return 1
+    local best_len=0 best_ide=""
+    local line path_pattern ide expanded
+    while IFS= read -r line || [[ -n "$line" ]]; do
+        [[ "$line" =~ ^[[:space:]]*# ]] && continue
+        [[ -z "${line// }" ]] && continue
+        read -r path_pattern ide <<< "$line"
+        [[ -z "$ide" ]] && continue
+        expanded="${path_pattern/#\~/$HOME}"
+        expanded=$(realpath -m "$expanded" 2>/dev/null) || continue
+        if [[ "$dir" == "$expanded" || "$dir" == "$expanded"/* ]]; then
+            if (( ${#expanded} > best_len )); then
+                best_len=${#expanded}
+                best_ide=$ide
+            fi
+        fi
+    done < "$override_file"
+    [[ -n "$best_ide" ]] && printf '%s' "$best_ide"
+}
+
+if resolved=$(ide_from_overrides); then
+    case "$resolved" in
+        webstorm) webstorm "$dir" & ;;
+        phpstorm) phpstorm "$dir" & ;;
+        nvim)     i3-sensible-terminal --class nvim -e "$HOME/.local/scripts/open-project-nvim" "$dir" & ;;
+        *)        echo "ide: unknown IDE in overrides: $resolved" >&2; exit 1 ;;
+    esac
+    exit 0
+fi
+
 if [[ -f "$dir/composer.json" ]]; then
     phpstorm "$dir" &
 elif [[ -f "$dir/package.json" ]]; then

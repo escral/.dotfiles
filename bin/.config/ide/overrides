@@ -1,0 +1,8 @@
+# Per-path IDE overrides (checked before composer.json / package.json).
+# Format: path_or_prefix ide
+#   path: absolute, or ~ for home. If the target directory equals this path or
+#   lies under it, that IDE is used (longest matching prefix wins).
+# ide: webstorm | phpstorm | nvim
+
+~/.dotfiles webstorm
+~/environment webstorm
