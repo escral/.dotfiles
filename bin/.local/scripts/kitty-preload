@@ -1,0 +1,9 @@
+#!/bin/bash
+# Spawn a kitty instance. i3's for_window rule moves it to scratchpad instantly.
+# Once the window is detected, record its class for kitty-fast to use.
+
+CLASS="kittyfast_$(date +%s%N)"
+kitty --class "$CLASS" &
+
+xdotool search --sync --class "$CLASS" >/dev/null 2>&1
+echo "$CLASS" > /tmp/kittyfast_ready

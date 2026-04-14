@@ -1,0 +1,13 @@
+#!/bin/bash
+# Show the pre-loaded kitty from scratchpad (tiled, like a normal kitty window),
+# then preload the next instance in background.
+
+CLASS=$(cat /tmp/kittyfast_ready 2>/dev/null)
+
+if [ -n "$CLASS" ]; then
+    rm -f /tmp/kittyfast_ready
+    i3-msg "[class=\"$CLASS\"] scratchpad show; floating disable"
+    kitty-preload &
+else
+    kitty &
+fi
