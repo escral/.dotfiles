@@ -1,8 +1,66 @@
 #!/usr/bin/env zsh
 # @action group:scripts exec:i3-sensible-terminal -e zsh $HOME/.local/scripts/wallpaper title:Pick wallpaper (fzf)
 
-wallpapers=$(fd --type file --base-directory ~/personal/wallpapers)
-wallpaper_name=$(echo "-- Random\n$wallpapers" | fzf --preview="kitty +kitten icat --transfer-mode stream --place 100x100@0x0 -z -1 ~/personal/wallpapers/{}")
+WALLPAPER_DIR="${WALLPAPER_DIR:-$HOME/personal/wallpapers}"
+
+set_wallpaper() {
+    local wallpaper_path="$1"
+    local head_arg="$2"
+
+    if [[ -n "$head_arg" && "$head_arg" =~ ^[0-9]+$ ]]; then
+        nitrogen --set-zoom-fill --save --head="$head_arg" "$wallpaper_path"
+    else
+        # Nitrogen --head expects 0..n (not xrandr output names); set same image on each head.
+        local num_heads
+        num_heads=$(xrandr | grep -c " connected")
+        local i
+        for (( i = 0; i < num_heads; i++ )); do
+            nitrogen --set-zoom-fill --save --head="$i" "$wallpaper_path"
+        done
+    fi
+}
+
+if [[ "$1" == "add" ]]; then
+    if [[ -z "$2" ]]; then
+        echo "usage: wallpaper add <url>" >&2
+        exit 1
+    fi
+    local url="$2"
+    local local_part="${url%%\?*}"
+    local fname
+    fname=$(basename "$local_part")
+    if [[ -z "$fname" || "$fname" == "/" ]]; then
+        fname="wallpaper-$(date +%s).jpg"
+    fi
+    fname="${fname//[^a-zA-Z0-9._-]/_}"
+
+    mkdir -p "$WALLPAPER_DIR"
+    local dest="$WALLPAPER_DIR/$fname"
+    if [[ -e "$dest" ]]; then
+        local base="${fname%.*}"
+        local ext="${fname##*.}"
+        [[ "$base" == "$ext" ]] && ext=""
+        if [[ -n "$ext" ]]; then
+            dest="$WALLPAPER_DIR/${base}-$(date +%s).$ext"
+        else
+            dest="$WALLPAPER_DIR/${fname}-$(date +%s)"
+        fi
+    fi
+
+    echo "Downloading to $dest"
+    if ! curl -fsSL --globoff -o "$dest" "$url"; then
+        echo "Download failed" >&2
+        rm -f "$dest"
+        exit 1
+    fi
+
+    echo "Setting wallpaper"
+    set_wallpaper "$dest"
+    exit 0
+fi
+
+wallpapers=$(fd --type file --base-directory "$WALLPAPER_DIR")
+wallpaper_name=$(echo "-- Random\n$wallpapers" | fzf --preview="kitty +kitten icat --transfer-mode stream --place 100x100@0x0 -z -1 $WALLPAPER_DIR/{}")
 
 if [[ "$wallpaper_name" == "-- Random" ]]; then
     echo "Random wallpaper selected"
@@ -16,15 +74,6 @@ fi
 
 echo "Setting wallpaper $wallpaper_name"
 
-wallpaper_name="/home/alexander/personal/wallpapers/$wallpaper_name"
+wallpaper_name="$WALLPAPER_DIR/$wallpaper_name"
 
-# If monitor number is provided, set wallpaper for that monitor only
-if [[ $1 =~ ^[0-9]+$ ]]; then
-    nitrogen --set-zoom-fill --save --head="$1" "$wallpaper_name"
-else
-    available_monitors=$(xrandr | grep " connected" | cut -d" " -f1)
-
-    for monitor in "${available_monitors[@]}"; do
-        nitrogen --set-zoom-fill --save --head="$monitor" "$wallpaper_name"
-    done
-fi
+set_wallpaper "$wallpaper_name" "$1"

@@ -1,5 +1,23 @@
 #!/usr/bin/env bash
 # @action group:scripts exec:i3-sensible-terminal -e zsh $HOME/.local/scripts/ide title:Open directory in appropriate IDE
+#
+# Default routing (only if no override matches):
+#   - composer.json present  -> phpstorm
+#   - package.json present   -> webstorm
+#   - otherwise              -> nvim (in a terminal)
+#
+# Exceptions: edit ~/.config/ide/overrides (or set IDE_OVERRIDES to another file).
+#   - One rule per line:  <path> <ide>
+#   - path: absolute, or use ~ for $HOME. A rule applies if the opened directory
+#     equals that path or is under it (subfolders count).
+#   - If several rules match, the longest path wins (most specific).
+#   - Lines starting with # and blank lines are ignored.
+#   - ide must be one of: webstorm | phpstorm | nvim
+#
+# Example overrides file:
+#   # dotfiles and env repos always WebStorm
+#   ~/.dotfiles   webstorm
+#   ~/environment webstorm
 
 dir="${1:-.}"
 dir=$(realpath "$dir")

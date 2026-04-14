@@ -1,4 +1,4 @@
-export STOW_FOLDERS="autorandr,bin,action-hub,kitty,i3,zsh,fonts,rofi,fonts,fzf,vim,nvim,git,dunst,pi"
+export STOW_FOLDERS="autorandr,bin,action-hub,kitty,i3,zsh,fonts,rofi,fonts,fzf,vim,nvim,git,dunst,pi,picom"
 
 increaseWatchers() {
     sudo sysctl fs.inotify.max_user_watches=65536

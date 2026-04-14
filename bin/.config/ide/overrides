@@ -3,6 +3,8 @@
 #   path: absolute, or ~ for home. If the target directory equals this path or
 #   lies under it, that IDE is used (longest matching prefix wins).
 # ide: webstorm | phpstorm | nvim
+#
+# Add a new exception: append a line "<path> <ide>" (see ~/.local/scripts/ide header).
 
 ~/.dotfiles webstorm
 ~/environment webstorm
