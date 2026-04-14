@@ -1,15 +1,18 @@
 #!/bin/bash
 # Show the pre-loaded kitty from scratchpad (tiled, like a normal kitty window),
 # then preload the next instance in background.
+#
+# Must match i3 workspaces.conf: set $wsTerminals "3: Terminals"
+WS_TERMINALS='3: Terminals'
 
 CLASS=$(cat /tmp/kittyfast_ready 2>/dev/null)
 
 if [ -n "$CLASS" ]; then
     rm -f /tmp/kittyfast_ready
-    i3-msg "[class=\"$CLASS\"] scratchpad show; floating disable"
+    i3-msg "[class=\"$CLASS\"] scratchpad show, floating disable, move container to workspace \"$WS_TERMINALS\""
+    i3-msg "workspace \"$WS_TERMINALS\""
 else
     kitty &
 fi
 
 ~/.local/scripts/kitty-preload &
-
