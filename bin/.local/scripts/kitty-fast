@@ -7,7 +7,9 @@ CLASS=$(cat /tmp/kittyfast_ready 2>/dev/null)
 if [ -n "$CLASS" ]; then
     rm -f /tmp/kittyfast_ready
     i3-msg "[class=\"$CLASS\"] scratchpad show; floating disable"
-    kitty-preload &
 else
     kitty &
 fi
+
+~/.local/scripts/kitty-preload &
+
