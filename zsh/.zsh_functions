@@ -22,6 +22,26 @@ addToPathFront() {
     fi
 }
 
+unalias s 2>/dev/null
+# SSH wrapper with fzf host picker.
+# Usage:
+#   s              — pick a host interactively via fzf
+#   s <host>       — connect directly
+s() {
+    if [[ $# -eq 0 ]]; then
+        # Collect Host entries from both the shared and machine-local configs,
+        # skip wildcard blocks (Host *), then fuzzy-pick one.
+        local host
+        host=$(grep -h "^Host " ~/.ssh/config ~/.ssh/config.local 2>/dev/null \
+            | awk '{print $2}' \
+            | grep -v '^\*$' \
+            | fzf --prompt="SSH > ")
+        [[ -n "$host" ]] && kitty +kitten ssh "$host"
+    else
+        kitty +kitten ssh "$@"
+    fi
+}
+
 commitDotFiles() {
     pushd $DOTFILES
     pushd personal

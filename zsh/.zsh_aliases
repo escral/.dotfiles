@@ -3,7 +3,6 @@ alias ff='fzm'
 alias ffp='fzm | open-project-nvim'
 alias www="cd /var/www"
 alias vim="nvim"
-alias s="kitty +kitten ssh"
 
 # JS
 alias pn='pnpm'
