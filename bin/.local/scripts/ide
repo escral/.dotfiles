@@ -66,5 +66,6 @@ if [[ -f "$dir/composer.json" ]]; then
 elif [[ -f "$dir/package.json" ]]; then
     webstorm "$dir" &
 else
-    i3-sensible-terminal --class nvim -e "$HOME/.local/scripts/open-project-nvim" "$dir" &
+    webstorm "$dir" &
+#    i3-sensible-terminal --class nvim -e "$HOME/.local/scripts/open-project-nvim" "$dir" &
 fi

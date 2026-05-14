@@ -8,3 +8,4 @@
 
 ~/.dotfiles webstorm
 ~/environment webstorm
+/var/www/tbc-argo-v2 phpstorm
