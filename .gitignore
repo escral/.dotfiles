@@ -1,3 +1,4 @@
 .idea
 bin/.local/bin
 i3/.config/i3/monitors.conf
+ssh/.ssh/config.local

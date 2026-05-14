@@ -1,0 +1,54 @@
+#!/usr/bin/env zsh
+# Toggle a NetworkManager connection (VPN or any saved profile).
+# Usage: vpn <connection-name>
+#        vpn word1 word2   — same as "word1 word2"
+#        vpn --status <connection-name>
+
+if [[ $# -eq 0 ]]; then
+    echo "usage: vpn [--status] <connection-name>" >&2
+    exit 1
+fi
+
+if ! command -v nmcli >/dev/null; then
+    echo "vpn: nmcli not found (install NetworkManager)" >&2
+    exit 1
+fi
+
+local status_only=0
+if [[ "$1" == "--status" ]]; then
+    status_only=1
+    shift
+    if [[ $# -eq 0 ]]; then
+        echo "usage: vpn --status <connection-name>" >&2
+        exit 1
+    fi
+fi
+
+local name="$*"
+
+if ! nmcli -t -f NAME connection show | grep -Fqx "$name"; then
+    echo "vpn: no such connection: $name" >&2
+    exit 1
+fi
+
+local line
+local active=0
+for line in "${(@f)$(nmcli -t -f NAME connection show --active 2>/dev/null)}"; do
+    [[ "$line" == "$name" ]] && active=1 && break
+done
+
+if (( status_only )); then
+    if (( active )); then
+        print "$name: up"
+        exit 0
+    else
+        print "$name: down"
+        exit 1
+    fi
+fi
+
+if (( active )); then
+    exec nmcli connection down "$name"
+else
+    exec nmcli connection up "$name"
+fi

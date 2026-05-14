@@ -2,8 +2,8 @@
 # Show the pre-loaded kitty from scratchpad (tiled, like a normal kitty window),
 # then preload the next instance in background.
 #
-# Must match i3 workspaces.conf: set $wsTerminals "3: Terminals"
-WS_TERMINALS='3: Terminals'
+# Must match i3 workspaces.conf: set $wsTerminals "2: Terminals"
+WS_TERMINALS='2: Terminals'
 
 CLASS=$(cat /tmp/kittyfast_ready 2>/dev/null)
 
