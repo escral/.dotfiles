@@ -9,3 +9,4 @@
 ~/.dotfiles webstorm
 ~/environment webstorm
 /var/www/tbc-argo-v2 phpstorm
+/var/www/tbc-back-office-frontend webstorm
