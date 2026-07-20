@@ -7,5 +7,5 @@ action=$(dunstify \
   "$DUNST_BODY")
 
 if [ "$action" = "open" ]; then
-  i3-msg '[class="Slack"] focus' >/dev/null || slack >/dev/null 2>&1 &
+  i3-msg '[class="slack"] focus' >/dev/null || slack >/dev/null 2>&1 &
 fi

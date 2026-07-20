@@ -129,9 +129,9 @@
 #    timeout = 0
 
 # ── App rule: Slack ───────────────────────────────────────────────────────────
-# Snap uses desktop-entry slack_slack; deb installs often use slack_Slack.
+# Electron 42+ uses lowercase app id "slack"; snap/deb may still send slack_slack.
 [slack-desktop]
-    desktop_entry = slack_*
+    desktop_entry = slack*
     new_icon = slack
     frame_color = "#fe640b"
     format = "<b>%s</b>\n%b"
@@ -139,7 +139,7 @@
 
 # Electron often omits desktop-entry; match by app name instead.
 [slack-appname]
-    appname = Slack
+    appname = [Ss]lack
     new_icon = slack
     frame_color = "#fe640b"
     format = "<b>%s</b>\n%b"
